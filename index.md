@@ -3,6 +3,7 @@ layout: page
 title: RPA (Robotic Process Automation)
 ---
 
+- [CLI 환경설정: 도커 - Data Science at the Command Line](rpa-setup.html)
 
 
 ## 참고문헌
