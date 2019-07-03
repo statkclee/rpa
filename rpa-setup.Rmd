@@ -1,0 +1,186 @@
+---
+layout: page
+title: "CLI 환경설정"
+subtitle: "도커 - Data Science at the Command Line"
+author:
+    name: xwMOOC
+date: "`r Sys.Date()`"
+output:
+  html_document: 
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_section: true
+    self_contained: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(reticulate)
+use_condaenv("anaconda3")
+# reticulate::repl_python()
+```
+
+# 도커 설치 [^windows-docker] {#docker-install}
+
+[^windows-docker]: [Hanumoka, IT Blog, "Windows10pro docker 설치하기"](https://blog.hanumoka.net/2018/04/28/docker-20180428-windows10pro-install-docker/)
+
+윈도즈10 Pro에는 "Docker Toolbox"가 아니라 "Docker Community Edition for Windows"를 설치한다. 윈도즈10 홈 버전이 깔린 경우는 "Docker Toolbox"를 설치한다.
+
+## 사전 준비 사항 {#docker-install-pre}
+
+도커를 윈도우10 Pro에 설치할 경우 가상화여부를 꼭 "사용"으로 활성화 시켜야 한다. 컴퓨터 초기 부팅할 때 Bios로 들어가서 CPU메뉴에서 "Virtualization"을 사용할 수 있도록 활성화 시킨다. "윈도우 작업관리자" &rarr; "성능" **가상화 사용**을 확인한다.
+
+그다음으로 'Hyper-V'도 활성화 시켜야 한다. 이를 위해서 "제어판"에서 `설정 찾기` 검색창에 "Windows 기능 켜기/끄기"창을 열어 'Hyper-V'를 모두 활성화 시킨다.
+
+사전준비 사항이 모두 준비되면 재부팅하고 도커 설치를 준비한다.
+
+## 도커 다운로드 및 설치 {#docker-install-download}
+
+[Docker Hub](https://hub.docker.com/)에서 [Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)를 직접 다운로드 받는 방법과 [Docker Documentation](https://docs.docker.com/)을 참조하여 도커를 설치하는 방법은 다음과 같다.
+
+1. <https://docs.docker.com/> 웹사이트 이동 
+1. Get Docker 
+1. Docker CE 
+1. Docker Desktop for Windows
+1. Download from Docker Hub
+1. Get Docker 버튼 클릭
+
+## Kitematic 설치 {#docker-kitematic}
+
+Kitematic은 도커를 관리하는 GUI도구로 설치방법은 먼저 우측하단 도커 아이콘에 마우스를 놓고 우클릭을 하게 되면 `Kitematic`을 선택할 수 있다. 처음 클릭하게 되면 `Download Kitematic` 팝업이 떠서 다운로드 안내가 나온다. 안내에 따라 다운로드 받아 압축을 풀고 `C:\Program Files\Docker` 폴더에 복사해서 넣으면 된다. 폴더 이름을 `Kitematic-Windows` &rarr; `Kitematic`으로 바꿔야한다.
+
+# `docker` 헬로월드 {#docker-helloworld}
+
+도커를 설치했으며 그 다음으로 헬로월드를 찍어본다. 먼저 `docker --version` 명령어로 도커 버젼을 확인한다. 
+
+```{r docker-hello, eval=FALSE}
+$ docker --version
+Docker version 18.09.2, build 6247962
+$ docker info
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 0
+Server Version: 18.09.2
+...
+```
+
+## 도커 헬로월드 {#docker-real-helloworld}
+
+`docker run hello-world` 명령어로 'hello-world:latest' 이미지를 가져올 수 있고 자세한 안내가 출력된다. 그리고 나서 `docker images` 명령어로 `hello-world` 이미지를 받은 것을 확인할 수 있다.
+
+```{r docker-hello2, eval=FALSE}
+$ docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+1b930d010525: Pull complete
+Digest: sha256:41a65640635299bab090f783209c1e3a3f11934cf7756b09cb2f1e02147c6ed8
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+  $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+
+$ docker images
+REPOSITORY                                              TAG                 IMAGE ID            CREATED             SIZE
+hello-world                                             latest              fce289e99eb9        6 months ago        1.84kB
+```
+
+## CLatDS 도커 [^docker-overview] {#docker-real-cli}
+
+[^docker-overview]: [도커 초간단 사용법](https://datascienceschool.net/view-notebook/708e711429a646818b9dcbb581e0c10a/)
+
+Docker Hub 웹사이트에서 [datascienceworkshops/data-science-at-the-command-line](https://hub.docker.com/r/datascienceworkshops/data-science-at-the-command-line) 이미지를 가져온다.
+
+```{r docker-ds, eval=FALSE}
+$ docker pull datascienceworkshops/data-science-at-the-command-line
+Using default tag: latest                                                                      
+latest: Pulling from datascienceworkshops/data-science-at-the-command-line                     
+8e3ba11ec2a2: Pull complete 
+eb2689f05349: Pull complete 
+aaf9763d2171: Pull complete 
+5947f061b598: Pull complete 
+179b9cf8c467: Pull complete 
+fb6be1f79eea: Pull complete 
+c64519966c3f: Pull complete 
+325cbb6a3e0d: Pull complete 
+05fbdb8cd2fe: Pull complete 
+0c65e2dc2933: Pull complete 
+2ce04975103f: Pull complete 
+1ea33d87eef1: Pull complete 
+bbe891eff1d9: Pull complete 
+49a9d13e1649: Pull complete 
+5d42ea4ec194: Pull complete 
+abbeda4b97b8: Pull complete 
+7a1d8da11e8f: Pull complete 
+077a85dba1f6: Pull complete 
+235bc371a538: Pull complete 
+803becd4f1cd: Pull complete 
+f14077f11c77: Pull complete 
+7808b333f37f: Pull complete 
+827f20d715e6: Pull complete 
+b471303106e1: Pull complete 
+4598a96790b8: Pull complete 
+ca91c2aca867: Pull complete 
+f646cf912266: Pull complete 
+97b19a0c648f: Pull complete 
+Digest: sha256:0b1bd0dced0f45a7b137c24171b0ff70b19770bd43fb09a863efb87b17d94338                
+Status: Downloaded newer image for datascienceworkshops/data-science-at-the-command-line:latest
+```
+
+도커 허브에서 가져온 도커 이미지를 도커 컨테이너로 띄우는 작업을 다음 명령어로 실행하고 `bash`쉘로 들어간다. 여기서 `clids`는 너무 길다보니 별명을 주어 단축시킨 것이다. `cowsay` 명령어로 헬로월드를 찍어보고 `exit` 명령어 혹은 `Ctrl`+p, `Ctrl`+q 키를 연타하여  컨테이너를 종료시킨다.
+
+```{r docker-cli-run, eval = FALSE}
+$ docker run -i -t --name clids datascienceworkshops/data-science-at-the-command-line /bin/bash
+[/data]$  echo '데이터 사이언스는 역시 CLI' | cowsay
+ ____________________________
+< 데이터 사이언스는 역시 CLI >
+ ----------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+[/data]$ exit
+```
+
+`docker ps -a` 명령어로 떠있는 컨테이너를 확인하고 해당 컨테이너를 다시 살려서 작업을 이어가려면 `docker container start` 명령어를 해당 컨테이너 해쉬값 혹은 별명을 인자로 넣어 함께 실행시킨다. 그리고 나서 `docker container attach` 명령어를 실행시키면 다시 컨테이너로 들어가서 작업을 계속 수행할 수 있다.
+
+```{r docker-cli-run-exit, eval=FALSE}
+$ docker ps -a
+CONTAINER ID        IMAGE                                                   COMMAND             CREATED             STATUS                      PORTS               NAMES
+e94a040d5b77        datascienceworkshops/data-science-at-the-command-line   "/bin/bash"         10 minutes ago      Exited (0) 5 seconds ago                        cli_ds
+2d0ec2635aa8        hello-world                                             "/hello"            19 minutes ago      Exited (0) 18 minutes ago                       nostalgic_williams
+
+$ docker container start e94a
+e94a
+
+$ docker container attach e94a
+[/data]$
+```
+

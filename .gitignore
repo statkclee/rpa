@@ -47,3 +47,4 @@ flaskapp/lib/
 flaskapp/data/
 flaskapp/bin/
 
+.Rproj.user
