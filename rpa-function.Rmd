@@ -1,0 +1,156 @@
+---
+layout: page
+title: "CLI 환경설정"
+subtitle: "함수: 쉘 스크립트(`.sh`) vs 스크립트(`.R`, `.py`)"
+author:
+    name: xwMOOC
+date: "`r Sys.Date()`"
+output:
+  html_document: 
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_section: true
+    self_contained: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(reticulate)
+use_condaenv("anaconda3")
+# reticulate::repl_python()
+```
+
+# 쉘이냐 프로그램이냐 {#shell-program}
+
+데이터를 처리하는 입장에서 쉘(shell) 스크립트를 통해 작업을 수행하는 방식과 파이썬 혹은 R 코드를 작성해서 처리하는 방식으로 나뉜다. 과연 어떤 방식이 좋을까? 답은 아마도 상황에 따라 다르다가 될 것이다.
+
+한줄 쉘 스크립트를 `.sh` 쉘파일을 제작해서 처리하는 방식과 범용 프로그래밍 언어 파이썬이나 R 프로그램을 작성하여 쉘에 실행하는 방식이 대안이 된다.
+
+# 한줄 쉘 스크립트 작성 {#shell-program-oneline}
+
+구텐베르그에서 책을 한권 다운로드 받아 가장 많이 사용된 고빈도 단어를 추출하는 프로그램을 작성한다.
+불용어(stopwords)는 [stopwords.txt](https://gist.github.com/larsyencken/1440509) 파일을 참조하여 제거한다.
+
+```{bash shell-run}
+curl -s http://www.gutenberg.org/files/76/76-0.txt |
+ tr '[:upper:]' '[:lower:]' | 
+ grep -oE '\w+' |
+ sort |                       
+ uniq -c |                    
+ sort -nr |                   
+ head -n 10  
+```
+
+- `curl -s http://www.gutenberg.org/files/76/76-0.txt` : 구텐베르그 웹사이트에서 Huckleberry Finn 책 다운로드
+- `tr '[:upper:]' '[:lower:]'` : 대문자를 소문자 변환 
+- `grep -oE '\w+'` : 단어를 쪼개서 한줄에 한단어를 위치시킴             
+- `sort` :  알파벳 순으로 정렬
+- `uniq -c` : 유일무이한 단어 추출 후 중복단어 빈도수 작성                   
+- `sort -nr` : 빈도별로 내림차순 정렬
+- `head -n 10` : 상위 단어 10개 추출
+
+# 함수 `.sh` 파일 작성 {#shell-program-oneline2sh}
+
+쉘 명령어가 파이프로 연결되어 매우 길어져서 이를 하나의 함수로 묶을 필요가 있다.
+이때 `.sh` 쉘 명령어로 만들어 문제를 해결한다.
+
+<div class = "row">
+  <div class = "col-md-6">
+
+**`word_count.sh` 원본**
+
+화장을 전혀하지 않은 원본 `.sh` 스크립트를 작성한다.
+이에 대한 기능을 테스트한다.
+
+```{r shell-run-sh, eval=FALSE}
+# script/wordcount.sh
+curl -s http://www.gutenberg.org/files/76/76-0.txt |
+ tr '[:upper:]' '[:lower:]' | 
+ grep -oE '\w+' |
+ sort |                       
+ uniq -c |                    
+ sort -nr |                   
+ head -n 10  
+```
+
+`script/wordcount.sh` 파일로 그대로 복사하여 붙여넣고 `bash` 명령어를 통해서 실행시키게 되면 된다. 하지만 아무래도 유연성이 많이 떨어져서 다음과 같이 몇가지 추가 작업을 하게 되면 훨씬 우아하게 코드를 작성하게 된다.
+
+```{bash shell-run-bash-script}
+bash script/wordcount.sh
+```
+
+
+  </div>
+  <div class = "col-md-6">
+**개선된 `wordcount2.sh` 코드**
+
+쉬뱅을 추가하여 `bash` 스크립트를 해석하여 실행시키도록 명시한다.
+`NUM_WORDS="$1"`와 같은 매개변수를 적용시켜 구텐베르그 책은 어떤 것이든 가져와서 단어빈도수를 지정된 순위까지 출력하도록 한다.
+
+1. 쉬뱅(shebang `#!`) 추가: `#! /bin/env bash`
+1. 매개변수를 넘겨 재사용성을 높인다.
+
+```{r shell-run-sh2, eval=FALSE}
+# script/wordcount2.sh
+
+#! /bin/bash
+BOOK="$1"
+NUM_WORDS="$2"
+curl -s $BOOK |
+ tr '[:upper:]' '[:lower:]' | 
+ grep -oE '\w+' |
+ sort |                       
+ uniq -c |                    
+ sort -nr |                   
+ head -n $NUM_WORDS
+```
+
+`script/wordcount2.sh`를 실행시키게 되면 두가지 매개변수 즉, 책과 상위 빈도수 단어갯수를 지정해줘야 정상 동작하게 된다.
+
+```{bash shell-run-sh2-run}
+bash script/wordcount2.sh http://www.gutenberg.org/files/76/76-0.txt 5
+```
+
+  </div>
+</div>
+
+한걸음 더 나아가 `chmod u+x script/wordcount2.sh`와 같이 실행가능한 기능을 부여하게 되면 `bash`를 앞에 붙일 필요없이 쉘에서 바로 실행이 가능하게 된다.
+
+# 파이썬 `.py` 파일 작성 {#python-program-oneline2sh}
+
+동일하게 텍스트 책을 받아 고빈도 단어를 계산해 내는 파이썬 프로그램도 작성이 가능하다.
+
+```{python wordcount-python, eval=FALSE}
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
+import re
+import sys
+from collections import Counter
+
+num_words = int(sys.argv[1])
+text = sys.stdin.read().lower()
+words = re.split('\W+', text)
+cnt = Counter(words)
+
+print(f'------------------')
+print(f'인자[0]: {sys.argv[0]}')
+print(f'인자[1: {sys.argv[1]}')
+print(f'------------------')
+
+for word, count in cnt.most_common(num_words):
+    print(f'빈도수: {count}, 단어: {word}')
+```
+
+상위 7개 단어만 출력하도록 파이썬 스크립트를 작성한다. 물론 그 이전에 `script/wordcount.py` 파일을 실행가능한 형태로 권한을 변경한다. `chmod u+x script/wordcount.py`
+
+```{bash run-finn-txt}
+< data/finn.txt script/wordcount.py 7
+```
+

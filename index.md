@@ -5,6 +5,7 @@ title: RPA (Robotic Process Automation)
 
 - [CLI 환경설정: 도커 - Data Science at the Command Line](rpa-setup.html)
 - [데이터 가져오기(ingest)](rpa-ingest.html)
+- [함수: 쉘 스크립트(`.sh`) vs 스크립트(`.R`, `.py`)](rpa-function.html)
 
 ## 참고문헌
 
