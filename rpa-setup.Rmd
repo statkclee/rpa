@@ -184,3 +184,21 @@ $ docker container attach e94a
 [/data]$
 ```
 
+
+# 컨테이너와 데이터 주고받기 {#docker-real-cli-volume}
+
+로컬 컴퓨터와 컨테이너와 데이터를 주고 받으려고 하면 디스크 볼륨(volume)을 추가하여 이를 매핑시키다.
+`-v`는 현재 디렉토리를 컨테이너 내부 `data` 디렉토리에 매핑시킨다. 이를 통해 데이터를 주고 받을 수가 있다. 
+
+```{r docker-container-volume, eval = FALSE}
+# 맥 / 리눅스
+$ docker run --rm -it -v `pwd`:/data datascienceworkshops/data-science-at-the-command-line
+
+# 윈도우
+$ docker run --rm -it -v %cd%:/data datascienceworkshops/data-science-at-the-command-line
+
+# 윈도우 파워쉘
+$ docker run --rm -it -v ${PWD}:/data datascienceworkshops/data-science-at-the-command-line
+```
+
+
