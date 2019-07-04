@@ -154,3 +154,27 @@ for word, count in cnt.most_common(num_words):
 < data/finn.txt script/wordcount.py 7
 ```
 
+# R스크립트 `.R` 파일 작성 {#R-program-oneline2sh}
+
+동일하게 R 스크립트를 작성하여 실행시킨다.
+
+```{r run-finn-text-with-r, eval=FALSE}
+#!/usr/bin/env Rscript
+
+n <- as.integer(commandArgs(trailingOnly = TRUE))
+f <- file("stdin")
+lines <- readLines(f)
+words <- tolower(unlist(strsplit(lines, "\\W+")))
+counts <- sort(table(words), decreasing = TRUE)
+counts_n <- counts[1:n]
+cat(sprintf("%7d %s\n", counts_n, names(counts_n)), sep = "")
+close(f)
+```
+
+`permission denied` 오류가 발생되는 경우, `chmod u+x script/wordcount.R` 명령어를 실행시켜 동일한 결과가 출력되는지 확인한다.
+
+```{bash run-text-with-R}
+< data/finn.txt script/wordcount.R 10
+```
+
+

@@ -1821,6 +1821,35 @@ div.tocify {
 빈도수: 2567, 단어: it
 빈도수: 2086, 단어: t</code></pre>
 </div>
+<div id="R-program-oneline2sh" class="section level1">
+<h1><span class="header-section-number">5</span> R스크립트 <code>.R</code> 파일 작성</h1>
+<p>동일하게 R 스크립트를 작성하여 실행시킨다.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">#!/usr/bin/env Rscript</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">commandArgs</span>(<span class="dt">trailingOnly =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">f &lt;-<span class="st"> </span><span class="kw">file</span>(<span class="st">&quot;stdin&quot;</span>)</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">lines &lt;-<span class="st"> </span><span class="kw">readLines</span>(f)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">words &lt;-<span class="st"> </span><span class="kw">tolower</span>(<span class="kw">unlist</span>(<span class="kw">strsplit</span>(lines, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">W+&quot;</span>)))</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">counts &lt;-<span class="st"> </span><span class="kw">sort</span>(<span class="kw">table</span>(words), <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">counts_n &lt;-<span class="st"> </span>counts[<span class="dv">1</span><span class="op">:</span>n]</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;%7d %s</span><span class="ch">\n</span><span class="st">&quot;</span>, counts_n, <span class="kw">names</span>(counts_n)), <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="kw">close</span>(f)</a></code></pre></div>
+<p><code>permission denied</code> 오류가 발생되는 경우, <code>chmod u+x script/wordcount.R</code> 명령어를 실행시켜 동일한 결과가 출력되는지 확인한다.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="op">&lt;</span> <span class="ex">data/finn.txt</span> script/wordcount.R 10</a></code></pre></div>
+<pre><code>Warning messages:
+1: package ‘ggplot2’ was built under R version 3.5.2 
+2: package ‘ggthemes’ was built under R version 3.5.2 
+   6439 and
+   5077 the
+   3666 i
+   3258 a
+   3022 to
+   2567 it
+   2086 t
+   2044 was
+   1847 he
+   1777 of</code></pre>
+</div>
 
 
 
