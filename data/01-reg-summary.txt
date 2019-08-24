@@ -1,0 +1,63 @@
+회귀분석 결과
+
+Call:
+lm(formula = y ~ x, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1006.9  -645.3  -162.8   685.1  1713.9 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1723.229    152.906  -11.27   <2e-16 ***
+x             101.864      2.629   38.75   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 758.8 on 98 degrees of freedom
+Multiple R-squared:  0.9387,	Adjusted R-squared:  0.9381 
+F-statistic:  1502 on 1 and 98 DF,  p-value: < 2.2e-16
+
+UTF-8
+회귀분석 결과
+
+Call:
+lm(formula = y ~ x, data = df)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-993.6 -665.9 -207.5  610.5 1741.6 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1724.533    156.542  -11.02   <2e-16 ***
+x             102.036      2.691   37.91   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 776.8 on 98 degrees of freedom
+Multiple R-squared:  0.9362,	Adjusted R-squared:  0.9355 
+F-statistic:  1437 on 1 and 98 DF,  p-value: < 2.2e-16
+
+UTF-8
+회귀분석 결과
+
+Call:
+lm(formula = y ~ x, data = df)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-997.8 -657.6 -256.1  552.6 1747.5 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1722.742    155.485  -11.08   <2e-16 ***
+x             101.928      2.673   38.13   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 771.6 on 98 degrees of freedom
+Multiple R-squared:  0.9369,	Adjusted R-squared:  0.9362 
+F-statistic:  1454 on 1 and 98 DF,  p-value: < 2.2e-16
+
+UTF-8
