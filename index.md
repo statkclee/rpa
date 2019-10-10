@@ -6,7 +6,7 @@ title: RPA (Robotic Process Automation)
 1. 명령라인(Commandline) 데이터 분석
      - [명령라인(Commandline) 인터페이스 - 데이터 과학](cmd-data-science-hello-world.html)
      - [대용량 데이터 표본추출](rpa-random-sampling.html)
-     - [CLI: 데이터 가져오기](cmd-ingest-data)
+     - [CLI: 데이터 가져오기](cli-ingest-data.html)
 1. **자동화(Automation)**
     - **R코드 자동화**
         - [유닉스 철학과 파이프라인](r-parallel-rscript-unix.html)

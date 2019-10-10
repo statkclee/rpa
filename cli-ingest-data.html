@@ -7,10 +7,11 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
-<meta name="date" content="2019-10-09" />
+<meta name="date" content="2019-10-10" />
 
 <title>RPA - 자동화(Automation)</title>
 
@@ -68,8 +69,6 @@ overflow: auto;
 margin-left: 2%;
 position: fixed;
 border: 1px solid #ccc;
-webkit-border-radius: 6px;
-moz-border-radius: 6px;
 border-radius: 6px;
 }
 
@@ -97,9 +96,14 @@ font-size: 12px;
 .tocify-subheader .tocify-subheader {
 text-indent: 30px;
 }
-
 .tocify-subheader .tocify-subheader .tocify-subheader {
 text-indent: 40px;
+}
+.tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader {
+text-indent: 50px;
+}
+.tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader .tocify-subheader {
+text-indent: 60px;
 }
 
 .tocify .tocify-item > a, .tocify .nav-list .nav-header {
@@ -503,13 +507,13 @@ float: none;
 
           item.append($("<a/>", {
 
-            "text": self.text()
+            "html": self.html()
 
           }));
 
         } else {
 
-          item.text(self.text());
+          item.html(self.html());
 
         }
 
@@ -1322,6 +1326,105 @@ window.initializeCodeFolding = function(show) {
 </script>
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
 
 
 <style type="text/css">
@@ -1440,56 +1543,12 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -1538,8 +1597,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -1586,7 +1643,7 @@ div.tocify {
 <h1 class="title toc-ignore">RPA - 자동화(Automation)</h1>
 <h3 class="subtitle">CLI: 데이터 가져오기</h3>
 <h4 class="author">xwMOOC</h4>
-<h4 class="date">2019-10-09</h4>
+<h4 class="date">2019-10-10</h4>
 
 </div>
 
@@ -1604,9 +1661,104 @@ div.tocify {
 <li><code>-L</code>: HTTP 300 오류 처리. 즉, Redirection(리다이렉션) 클라이언트는 요청을 마치기 위해 추가 동작을 취해야 하는데 이를 감안하여 작업을 완수함.</li>
 <li><code>-C</code>: 다운로드 작업이 완료하기 전에 시간이 초과되면 다시 재시작함.</li>
 </ul>
-<pre class="shell"><code>curl -o data/iris.csv https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv
-ls data/iris*</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">curl</span> -o data/iris.csv https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv</a></code></pre></div>
+<pre><code>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  3975  100  3975    0     0   4906      0 --:--:-- --:--:-- --:--:--  4907</code></pre>
+<p>다운로드 받은 파일에 대해서 내용을 살펴보려면 <code>head</code> 혹은 <code>cat</code> 명령어를 사용하면 된다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">head</span> data/iris.csv</a></code></pre></div>
+<pre><code>&quot;sepal.length&quot;,&quot;sepal.width&quot;,&quot;petal.length&quot;,&quot;petal.width&quot;,&quot;variety&quot;
+5.1,3.5,1.4,.2,&quot;Setosa&quot;
+4.9,3,1.4,.2,&quot;Setosa&quot;
+4.7,3.2,1.3,.2,&quot;Setosa&quot;
+4.6,3.1,1.5,.2,&quot;Setosa&quot;
+5,3.6,1.4,.2,&quot;Setosa&quot;
+5.4,3.9,1.7,.4,&quot;Setosa&quot;
+4.6,3.4,1.4,.3,&quot;Setosa&quot;
+5,3.4,1.5,.2,&quot;Setosa&quot;
+4.4,2.9,1.4,.2,&quot;Setosa&quot;</code></pre>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
+</style>
+<div class="blue">
+<ul>
+<li><a href="https://tidyverse.com/dataframe_001.csv" class="uri">https://tidyverse.com/dataframe_001.csv</a></li>
+<li><a href="https://tidyverse.com/dataframe_002.csv" class="uri">https://tidyverse.com/dataframe_002.csv</a></li>
+<li>…</li>
+<li><a href="https://tidyverse.com/dataframe_100.csv" class="uri">https://tidyverse.com/dataframe_100.csv</a></li>
+</ul>
+<p>위와 같이 파일이 다수 있는 경우 <strong>Globbing Parser</strong>를 사용한다.</p>
+<p>$ curl -O <a href="https://tidyverse.com/dataframe_%5B001-100%5D.txt" class="uri">https://tidyverse.com/dataframe_[001-100].txt</a></p>
 </div>
+</div>
+<div id="cmd-ingest-data-curl" class="section level2">
+<h2><span class="header-section-number">1.2</span> <code>wget</code> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h2>
+<p><code>wget</code>은 다수 파일을 다운로드 받는데 편리한 기능을 많이 제공하고 있다. 관련하여 많이 사용되는 선택옵션은 다음과 같다.</p>
+<ul>
+<li><code>-b</code>: 백그라운드 작업을 돌림</li>
+<li><code>-q</code>: <code>wget</code> 화면 출력을 생략시킴</li>
+<li><code>-c</code>: 다운로드가 중단된 경우 자동으로 재시작 시킴</li>
+<li><code>-P</code>: 다운로드 받은 파일을 특정 디렉토리를 지정시켜 저장함.</li>
+<li><code>-N</code>: 로컬에 동일한 이름의 파일이 있는 경우 덮어쓸 수 있다.</li>
+</ul>
+<p>기계학습 <a href="https://archive.ics.uci.edu/ml/index.php">UCI 데이터 저장소</a>에서는 기계학습용 데이터를 스키마, 칼럼명 파일과 몸통 데이터를 따로 제공하고 있다. 이런 경우 데이터를 가져올 경우 텍스트 파일에 다운로드 받을 파일을 저장시켜 놓고 이를 <code>wget</code>으로 받게 되면 깔끔하게 가져올 수 있다.</p>
+<p><a href="https://archive.ics.uci.edu/ml/datasets/Abalone">전복(abalone)</a> 데이터셋을 예로 들어보자. 아래와 같이 <code>abalone.data</code>, <code>abalone.names</code>로 나눠져 있다.</p>
+<ul>
+<li>Parent Directory</li>
+<li>Index</li>
+<li><a href="https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data">abalone.data</a></li>
+<li><a href="https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.names">abalone.names</a></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="bu">echo</span> <span class="st">&quot;https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.names</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data&quot;</span> <span class="op">&gt;</span> data/abalone.urlinfo</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="fu">cat</span> data/abalone.urlinfo</a></code></pre></div>
+<pre><code>https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.names
+https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data</code></pre>
+<p>특정 디렉토리(<code>data/</code>)로 지정하여 다운로드 받은 파일을 저장시킬 경우 <code>-P</code> 선택 인자를 사용한다. 따라서 입력파일(<code>abalone.names</code>)에 다운로드 받을 url 목록을 준비한다. 그리고 나서 <code>-i</code> 입력 선택인자를 설정하여 다운로드 받아 <code>data/</code> 디렉토리에 저장시킨다.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="fu">wget</span> -N -i data/abalone.urlinfo -P data/</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="fu">ls</span> data/abalone*</a></code></pre></div>
+<pre><code>--2019-10-10 14:32:54--  https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.names
+Resolving archive.ics.uci.edu (archive.ics.uci.edu)... 64:ff9b::80c3:afc, 128.195.10.252
+Connecting to archive.ics.uci.edu (archive.ics.uci.edu)|64:ff9b::80c3:afc|:443... connected.
+HTTP request sent, awaiting response... 304 Not Modified
+File ‘data/abalone.names’ not modified on server. Omitting download.
+
+--2019-10-10 14:32:54--  https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data
+Reusing existing connection to [archive.ics.uci.edu]:443.
+HTTP request sent, awaiting response... 304 Not Modified
+File ‘data/abalone.data’ not modified on server. Omitting download.
+
+data/abalone.data
+data/abalone.names
+data/abalone.urlinfo</code></pre>
+</div>
+</div>
+<div id="cmd-ingest-data-stack" class="section level1">
+<h1><span class="header-section-number">2</span> 데이터셋 만들기 - <code>abalone</code></h1>
+<p>앞서 다운로드 받은 <code>abalone</code> 데이터셋은 칼럼명과 몸통 데이터가 서로 분리된 두 파일로 되어 있다. 이를 하나로 결합하는데 사용되는 도구가 있는데 <code>csvkit</code> 내부에 <code>csvstack</code> 명령어를 사용하면 이를 간단히 해결할 수 있다.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">csvstack</span> data/abalone.names data/abalone.data <span class="op">&gt;</span> abalone.csv</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="fu">head</span> abalone.csv</a></code></pre></div>
+<pre><code>1. Title of Database: Abalone data
+
+2. Sources:
+
+   (a) Original owners of database:
+    Marine Resources Division
+    Marine Research Laboratories - Taroona
+    Department of Primary Industry and Fisheries, Tasmania
+    GPO Box 619F, Hobart, Tasmania 7001, Australia
+    (contact: Warwick Nash +61 02 277277, wnash@dpi.tas.gov.au)</code></pre>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://bioinformaticsworkbook.org/dataAcquisition/fileTransfer/downloading-files-via-wget.html">Downloading files using wget</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 
 
@@ -1627,6 +1779,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

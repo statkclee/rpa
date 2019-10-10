@@ -1,0 +1,124 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "CLI: 데이터 가져오기"
+author:
+    name: xwMOOC
+date: "`r Sys.Date()`"
+output:
+  html_document: 
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_section: true
+    self_contained: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(reticulate)
+use_condaenv("anaconda3")
+# reticulate::repl_python()
+```
+
+
+# `curl`, `wget` {#cmd-ingest-data}
+
+CLI 인터페이스를 사용해서 데이터를 가져올 때 많이 사용되는 도구가 `curl`, `wget`이 있다. `curl`은 **C**lient for **URL**s을 축약한 것으로 유닉스 명령라인 도구로 서버에서 데이터를 가져오거나, 데이터를 올릴 때 사용된다.
+
+`wget`은 **W**orld **W**ide **W**eb and **get**을 축약한 것으로 리눅스에서 처음 개발되었으나 현재는 모든 운영체제를 지원하고 있고, 파일 다수를 다운로드할 때 진가를 발휘한다.
+
+## `curl` {#cmd-ingest-data-curl}
+
+`curl`에서 많이 사용되는 선택 옵션은 다음과 같다.
+
+- `-o`: 서버에서 다운로드 받는 파일과 다른 파일명을 지정하고자 하는 경우 사용.
+- `-O`: 서버에서 다운로드 받는 파일과 동일한 파일명을 지정하고자 하는 경우 사용.
+- `-L`: HTTP 300 오류 처리. 즉, Redirection(리다이렉션) 클라이언트는 요청을 마치기 위해 추가 동작을 취해야 하는데 이를 감안하여 작업을 완수함.
+- `-C`: 다운로드 작업이 완료하기 전에 시간이 초과되면 다시 재시작함.
+
+```{bash, curl-iris}
+curl -o data/iris.csv https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv
+```
+
+다운로드 받은 파일에 대해서 내용을 살펴보려면 `head` 혹은 `cat` 명령어를 사용하면 된다.
+
+```{bash, curl-iris-ls}
+head data/iris.csv
+```
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
+</style>
+<div class = "blue">
+
+- https://tidyverse.com/dataframe_001.csv
+- https://tidyverse.com/dataframe_002.csv
+- ...
+- https://tidyverse.com/dataframe_100.csv
+
+위와 같이 파일이 다수 있는 경우 **Globbing Parser**를 사용한다.
+
+$ curl -O https://tidyverse.com/dataframe_[001-100].txt
+
+</div>
+
+## `wget`  [^reference-wget] {#cmd-ingest-data-curl}
+
+[^reference-wget]: [Downloading files using wget](https://bioinformaticsworkbook.org/dataAcquisition/fileTransfer/downloading-files-via-wget.html)
+
+`wget`은 다수 파일을 다운로드 받는데 편리한 기능을 많이 제공하고 있다.
+관련하여 많이 사용되는 선택옵션은 다음과 같다.
+
+- `-b`: 백그라운드 작업을 돌림
+- `-q`: `wget` 화면 출력을 생략시킴
+- `-c`: 다운로드가 중단된 경우 자동으로 재시작 시킴
+- `-P`: 다운로드 받은 파일을 특정 디렉토리를 지정시켜 저장함.
+- `-N`: 로컬에 동일한 이름의 파일이 있는 경우 덮어쓸 수 있다.
+
+기계학습 [UCI 데이터 저장소](https://archive.ics.uci.edu/ml/index.php)에서는 기계학습용 데이터를 스키마, 칼럼명 파일과 몸통 데이터를 따로 제공하고 있다. 이런 경우 데이터를 가져올 경우 텍스트 파일에 다운로드 받을 파일을 저장시켜 놓고 이를 `wget`으로 받게 되면 깔끔하게 가져올 수 있다. 
+
+[전복(abalone)](https://archive.ics.uci.edu/ml/datasets/Abalone) 데이터셋을 예로 들어보자. 아래와 같이 `abalone.data`, `abalone.names`로 나눠져 있다.
+
+- Parent Directory
+- Index
+- [abalone.data](https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data)
+- [abalone.names](https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.names)
+
+```{bash uci-abalone}
+echo "https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.names
+https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data" > data/abalone.urlinfo
+
+cat data/abalone.urlinfo
+```
+
+특정 디렉토리(`data/`)로 지정하여 다운로드 받은 파일을 저장시킬 경우 `-P` 선택 인자를 사용한다.
+따라서 입력파일(`abalone.names`)에 다운로드 받을 url 목록을 준비한다. 그리고 나서 `-i` 입력 선택인자를 설정하여 다운로드 받아 `data/` 디렉토리에 저장시킨다.
+
+```{bash}
+wget -N -i data/abalone.urlinfo -P data/
+
+ls data/abalone*
+```
+
+# 데이터셋 만들기 - `abalone` {#cmd-ingest-data-stack}
+
+앞서 다운로드 받은 `abalone` 데이터셋은 칼럼명과 몸통 데이터가 서로 분리된 두 파일로 되어 있다. 이를 하나로 결합하는데 사용되는 도구가 있는데 `csvkit` 내부에 `csvstack` 명령어를 사용하면 이를 간단히 해결할 수 있다.
+
+``` {bash cli-csvkit-stack}
+csvstack data/abalone.names data/abalone.data > abalone.csv
+
+head abalone.csv
+```
+
+
+
+
+
+
+
