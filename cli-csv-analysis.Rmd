@@ -65,7 +65,7 @@ head data/iris_ws.csv | csvlook
 
 `csvkit`에 포함된 `csvstat` 명령어를 통해 직사각형 데이터의 변수별 단변량 기술통계량(descriptive statistics)를 뽑아볼 수 있다. 이를 통해 자료형, 결측값을 포함한 기초 통계를 자료유형별로 뽑아볼 수 있다.
 
-```{bash excel-worksheet-lookinside}
+```{bash excel-worksheet-lookinside-again}
 csvstat data/iris_ws.csv
 ```
 
