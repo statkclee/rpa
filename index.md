@@ -8,6 +8,7 @@ title: RPA (Robotic Process Automation)
      - [대용량 데이터 표본추출](rpa-random-sampling.html)
      - [CLI: 데이터 가져오기](cli-ingest-data.html)
      - [CLI: `csvkit` 데이터 분석](cli-csv-analysis.html)
+     - [CLI: 예측모형 자동배포 - `iris`](cli-ml-deployment.html)
 1. **자동화(Automation)**
     - **R코드 자동화**
         - [유닉스 철학과 파이프라인](r-parallel-rscript-unix.html)
