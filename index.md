@@ -20,6 +20,8 @@ title: RPA (Robotic Process Automation)
         - [소프트웨어 카펜트리 자동화 Make(소프트웨어)](http://statkclee.github.io/make-novice/index-kr.html)
         - [R과 Make(소프트웨어+R) - TV 토론 효과](r-make-software.html)
         - [STAT545 자동화 - Make](r-stat545-make.html)
+1. R + Shell
+    - [R에서 쉘 System 호출(Invoke)](r-shell-invoke.html)
 - **특수주제**
     - [CLI 환경설정: 도커 - Data Science at the Command Line](rpa-setup.html)
     - [데이터 가져오기(ingest)](rpa-ingest.html)
