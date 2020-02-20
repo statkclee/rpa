@@ -1,0 +1,53 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "쉘 프로그래밍 (Shell Programming)"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_sections: TRUE
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(tidyverse)
+```
+
+# 배쉬 쉘(Bash Shell) {#bash-intro}
+
+배쉬(Bash)는 **B**ourne **A**gain **Sh**ell 의 약어로 80년대 제작되었지만, 클라우드 시대를 맞이하여 다시 각광받고 있으며 데이터 파이프라인 구축, 기계학습 모형을 실행하는데 꼭 필요한 도구다.
+
+> "Control + Enter"키를 조합시켜면 편집기 코드를 콘솔화면으로 보내는 반면 "Control + Alt + Enter"키를 조합시켜면 편집기 코드가 터미널로 날아간다. 즉, R 코드 실행은 "Control + Enter", 배쉬쉘 실행은 "Control + Alt + Enter".
+
+`grep` 명령어로 `soccer_scores.csv` 파일에서 `Etar`가 포함된 행을 뽑아 내서 앞에 3개만 골라 화면에 출력시킨다.
+
+```{bash test}
+grep 'Etar' data/shell/soccer_scores.csv | head -n 3
+```
+
+년도별로 골을 넣어 언급된 선수를 세어보자. 
+이를 위해서 `.csv` 확장자로 끝나는 파일을 `cut` 명령어로 짤라 선수만 추려 놓고 정렬시킨 후에 `uniq -c` 명령어로 세어본다.
+
+```{bash test-fruit}
+cat data/shell/soccer_scores.csv | cut -d ',' -f2 | sort | uniq -c | sort 
+```
+
+# 배쉬 스크립트(Bash Script) {#bash-intro-script}
+
+
+
+
+
+

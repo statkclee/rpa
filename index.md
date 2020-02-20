@@ -27,6 +27,7 @@ title: RPA (Robotic Process Automation)
     - [데이터 가져오기(ingest)](rpa-ingest.html)
     - [함수: 쉘 스크립트(`.sh`) vs 스크립트(`.R`, `.py`)](rpa-function.html)
     - [대용량 텍스트 데이터 깔끔하게 다루기](rpa-data-munging.html)
+1. [쉘 프로그래밍 (Shell Programming)](shell-programming.html)
 
 
 
