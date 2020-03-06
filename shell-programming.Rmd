@@ -38,10 +38,10 @@ grep 'Etar' data/shell/soccer_scores.csv | head -n 3
 ```
 
 년도별로 골을 넣어 언급된 선수를 세어보자. 
-이를 위해서 `.csv` 확장자로 끝나는 파일을 `cut` 명령어로 짤라 선수만 추려 놓고 정렬시킨 후에 `uniq -c` 명령어로 세어본다.
+이를 위해서 `.csv` 확장자로 끝나는 파일을 `cut` 명령어로 짤라 선수만 추려 놓고 정렬시킨 후에 `uniq -c` 명령어로 세어본다. 마지막으로 `sort -rn`으로 첫번째 칼럼을 숫자로 지정하고 역순으로 정렬시켜 결과를 출력한다.
 
 ```{bash test-fruit}
-cat data/shell/soccer_scores.csv | cut -d ',' -f2 | sort | uniq -c | sort 
+cat data/shell/soccer_scores.csv | cut -d ',' -f2 | sort | uniq -c | sort -rn
 ```
 
 # 배쉬 스크립트(Bash Script) {#bash-intro-script}

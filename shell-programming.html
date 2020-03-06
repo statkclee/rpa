@@ -1344,7 +1344,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(title);
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -1658,21 +1658,21 @@ div.tocify {
 <p>“Control + Enter”키를 조합시켜면 편집기 코드를 콘솔화면으로 보내는 반면 “Control + Alt + Enter”키를 조합시켜면 편집기 코드가 터미널로 날아간다. 즉, R 코드 실행은 “Control + Enter”, 배쉬쉘 실행은 “Control + Alt + Enter”.</p>
 </blockquote>
 <p><code>grep</code> 명령어로 <code>soccer_scores.csv</code> 파일에서 <code>Etar</code>가 포함된 행을 뽑아 내서 앞에 3개만 골라 화면에 출력시킨다.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">grep</span> <span class="st">&#39;Etar&#39;</span> data/shell/soccer_scores.csv <span class="kw">|</span> <span class="fu">head</span> -n 3</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">grep</span> <span class="st">'Etar'</span> data/shell/soccer_scores.csv <span class="kw">|</span> <span class="fu">head</span> -n 3</a></code></pre></div>
 <pre><code>1947,Etar,1
 1949,Etar,3
 1951,Etar,4</code></pre>
-<p>년도별로 골을 넣어 언급된 선수를 세어보자. 이를 위해서 <code>.csv</code> 확장자로 끝나는 파일을 <code>cut</code> 명령어로 짤라 선수만 추려 놓고 정렬시킨 후에 <code>uniq -c</code> 명령어로 세어본다.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">cat</span> data/shell/soccer_scores.csv <span class="kw">|</span> <span class="fu">cut</span> -d <span class="st">&#39;,&#39;</span> -f2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> -c <span class="kw">|</span> <span class="fu">sort</span> </a></code></pre></div>
-<pre><code>      1 Lokomotiv
-      1 Winner
-      4 Levski
-      8 Beroe
-      8 Cherno
-      9 Botev
-     13 Arda
-     15 Etar
-     17 Dunav</code></pre>
+<p>년도별로 골을 넣어 언급된 선수를 세어보자. 이를 위해서 <code>.csv</code> 확장자로 끝나는 파일을 <code>cut</code> 명령어로 짤라 선수만 추려 놓고 정렬시킨 후에 <code>uniq -c</code> 명령어로 세어본다. 마지막으로 <code>sort -rn</code>으로 첫번째 칼럼을 숫자로 지정하고 역순으로 정렬시켜 결과를 출력한다.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">cat</span> data/shell/soccer_scores.csv <span class="kw">|</span> <span class="fu">cut</span> -d <span class="st">','</span> -f2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> -c <span class="kw">|</span> <span class="fu">sort</span> -rn</a></code></pre></div>
+<pre><code>  17 Dunav
+  15 Etar
+  13 Arda
+   9 Botev
+   8 Cherno
+   8 Beroe
+   4 Levski
+   1 Winner
+   1 Lokomotiv</code></pre>
 </div>
 <div id="bash-intro-script" class="section level1">
 <h1><span class="header-section-number">2</span> 배쉬 스크립트(Bash Script)</h1>
