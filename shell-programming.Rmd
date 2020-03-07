@@ -46,8 +46,131 @@ cat data/shell/soccer_scores.csv | cut -d ',' -f2 | sort | uniq -c | sort -rn
 
 # 배쉬 스크립트(Bash Script) {#bash-intro-script}
 
+`$` 쉘 프롬프트에 배쉬 명령어를 한줄 한줄 작성하는 것도 좋은데 이런 경우 매번 수작업으로 일일이 때려줘야 되기 때문에 이를 스크립트 파일로 작성할 경우 편리한 경우가 많다. 이를 위해서 몇가지 사전 정지 작업이 필요하다.
+
+## 헬로 월드 스크립트 {#hello-world-bash-script}
+
+배쉬 스크립트를 실행시킬 프로그램을 확인해야 한다. 
+`which bash` 명령어로 배쉬 스크립트를 실행시킬 `bash` 경로명을 확인한다.
+
+```{bash hello-bash}
+which bash
+```
+
+배쉬 스크립트는 가장 먼저 앞서 확인한 `bash` 위치와 함께 쉬뱅(`#!`)으로 시작된다.
+전형적인 배쉬 스크립트는 다음과 같다.
+
+```{r bash-script-example, eval = FALSE}
+#!/bin/bash 
+
+echo '배쉬 스크립트 세계로 오신 것을 환영합니다'
+```
+
+상기 파일을 `hello_world.sh`와 같은 평문 텍스트 파일로 저장시키고 나서 `bash` 명령어로 실행시킨다.
 
 
 
+<div class = "row">
+  <div class = "col-md-6">
+**배쉬 스크립트 내용**
 
+```{bash show-bash-script}
+cat code/hello_world.sh
+```
+
+  </div>
+  <div class = "col-md-6">
+**배쉬 스크립트 샐행**
+
+```{bash show-bash-script-run}
+bash code/hello_world.sh
+```
+
+  </div>
+</div>
+
+## 빈도수 계산 {#calculate-frequency}
+
+대부분의 통계는 사실상 빈도수를 계산하는 것부터 시작하고 이것으로 분석이 마무리 되는 경우도 허다하다.
+코로나19가 맹위를 떨치고 있는 현재 "2020-03-07" 예제 데이터로 살펴보자.
+
+```{bash show-data}
+cat data/covid-19.csv
+```
+
+<div class = "row">
+  <div class = "col-md-6">
+**`dplyr` 빈도수 세는 함수 사용**
+
+```{r calculate-frequency-dply}
+library(tidyverse)
+covid_df <- readr::read_csv("data/covid-19.csv", col_names = FALSE)
+covid_df %>% 
+  count(X3, sort=TRUE)
+```
+
+  </div>
+  <div class = "col-md-6">
+**배쉬 명령어 파이프 연결**
+
+```{bash calculate-frequency-bash}
+cat data/covid-19.csv | cut -d ',' -f3 | sort | uniq -c | sort -rn
+```
+
+  </div>
+</div>
+
+이제 상기 파이프로 쭉 연결된 배쉬 명령어를 가독성이 좋게 스크립트로 정리하여 실행해 보자.
+암호같은 배쉬 쉘스크립트에 주석을 붙여 가독성을 높인다.
+
+```{bash write-script}
+cat code/covid_country.sh
+echo "====================="
+bash code/covid_country.sh
+```
+
+# 핵심 개념 {#bash-script-concept}
+
+유닉스 철학 중 하나가 하나만 잘하는 똘똘이들을 파이프로 묶어서 엄청난 작업을 하자는 것이다. 이 개념은 `tidyverse` 곳곳에서 찾을 수 있고, 최근에 `tidymodels`도 이런 사상을 뚜렷이 구현하고 있다.
+
+- [추상화와 유닉스 그리고 파이프라인](https://statkclee.github.io/rpa/r-parallel-rscript-unix.html)
+- [명령라인(Commandline) 데이터 분석](https://statkclee.github.io/rpa/cli-data-science-workflow.html)
+
+## 파이프 {#pipe-redirection}
+
+유닉스에서 데이터를 처리한 결과물은 표준 출력이 되고 이는 파이프를 통해 다시 다음 연산의 표준 입력으로 연결된다. 특별한 조치가 없으면 최종 결과물은 터미널에 보내지고 파일로 저장시키려면 리다이렉션(`redirection`)을 사용해서 파일로 저장시킨다.
+
+- 표준 입력(STDIN, standard input): 프로그램 입력되는 일련의 데이터.
+- 표준 출력(STDOUT, standard output): 프로그램에서 출력되는 일련의 데이터
+- 표준 오류(STDERR, standard error): 프로그램 오류
+
+![표준입력과 표준출력과 리다이렉션](fig/stdin_stdout.png)
+
+
+## 인자(ARGV) {#bash-argv}
+
+배쉬 스크립트는 인자(argument, parameter)를 받을 수 있는데 쉘 실행 호출 명령어 다음에 공백으로 구분을 하여 인자를 넘긴다.
+
+- `$1`, `$2`, `$3`... 이와 같이 배쉬 스크립트에 전달되는 인자를 인식하고, 
+- `$@` 혹은 `$*`으로 전달된 인자를 저장하고,
+- `$#` 으로 총 전달인자갯수를 파악한다.
+
+<div class = "row">
+  <div class = "col-md-6">
+**인자를 받는 배쉬 스크립트**
+
+```{bash call-bash-script-with-argv-script}
+cat code/covid_argv.sh
+```
+
+  </div>
+  <div class = "col-md-6">
+**인자를 받는 배쉬 스크립트 실행**
+
+```{bash call-bash-script-with-argv}
+bash code/covid_argv.sh 한국 중국 일본
+```
+
+  </div>
+</div>
 
