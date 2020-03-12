@@ -9,6 +9,7 @@ title: RPA (Robotic Process Automation)
      - [CLI: 데이터 가져오기](cli-ingest-data.html)
      - [CLI: `csvkit` 데이터 분석](cli-csv-analysis.html)
      - [CLI: 예측모형 자동배포 - `iris`](cli-ml-deployment.html)
+     - [R에서 쉘 System 호출(Invoke)](r-shell-invoke.html)
 1. **자동화(Automation)**
     - **R코드 자동화**
         - [유닉스 철학과 파이프라인](r-parallel-rscript-unix.html)
@@ -20,9 +21,8 @@ title: RPA (Robotic Process Automation)
         - [소프트웨어 카펜트리 자동화 Make(소프트웨어)](http://statkclee.github.io/make-novice/index-kr.html)
         - [R과 Make(소프트웨어+R) - TV 토론 효과](r-make-software.html)
         - [STAT545 자동화 - Make](r-stat545-make.html)
-1. R + Shell
-    - [R에서 쉘 System 호출(Invoke)](r-shell-invoke.html)
 1. [쉘 프로그래밍 (Shell Programming)](shell-programming.html)
+    - [쉘 프로그래밍: 반복, 조건문, 함수](shell-programming-advanced.html)
 - **특수주제**
     - [CLI 환경설정: 도커 - Data Science at the Command Line](rpa-setup.html)
     - [데이터 가져오기(ingest)](rpa-ingest.html)

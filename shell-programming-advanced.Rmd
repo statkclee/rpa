@@ -1,0 +1,109 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "쉘 프로그래밍: 반복, 조건문, 함수"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_sections: TRUE
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(tidyverse)
+```
+
+# 반복문(`for`) {#shell-for}
+
+# 함수 {#shell-function}
+
+# 자동실행(`cron`) {#shell-cron}
+
+# 조건문(`if`) {#shell-if}
+
+`if`문은 조건을 판별하여 조건에 부합되는 경우와 그렇지 않는 경우를 나눠서 프로그램을 진행시킨다. 쉘 프로그램에서 `if`문을 작성할 때 `if` ... `fi`와 같이 시작과 끝을 명기한다. `case`문도 동일하게 `case` ... `esac`와 같이 단어를 전치시킨다.
+
+```{bash if-statement}
+country="China"
+
+if [ $country ==  "China" ]; then
+    echo "Serious"
+else
+    echo "$country is not serious"
+fi    
+```
+
+단어나 문자를 비교하는 조건식을 작성할 때는 부울 표현식을 작성하면 되지만 숫자의 경우 조금 차이가 있다. 이를 보완하기 위해서 조건식 표현에 다음과 같이 사용하다.
+
+- `-eq`: 같다(equal to)
+- `-ne`: 같지 않다(not equal to)
+- `-lt`: 적다(less than)
+- `-le`: 같거나 적다(less than or equal to)
+- `-gt`: 크다(greater than)
+- `-ge`: 크거나 같다(greater than or equal to)
+
+<div class = "row">
+  <div class = "col-md-6">
+**숫자로 작성된 조건문**
+
+```{bash keyboard-syntax}
+a=3
+if (($a > 2)); then
+    echo "$a is greater than 2"
+fi    
+```
+
+  </div>
+  <div class = "col-md-6">
+**산술 기호(arithmetic flag)가 사용된 조건문**
+
+```{bash keyboard-syntax-flag}
+a=3
+if [ $a -gt 2 ]; then
+    echo "$a is greater than 2"
+fi
+```
+
+  </div>
+</div>
+
+따라서, 숫자의 경우도 또다른 구문에 따라 작성하는 대신 `if [ ... ]; then` 방식을 하나 익혀 이를 문자조건식 판별이나 숫자조건식 판별에 모두 사용하는 것도 인지부하를 줄이는 방식 중 하나가 될 것이다.
+
+조건식을 다수를 대표적인 부울 연산자(`&&`, `||`)를 동원하는 것도 가능하고 다수 조건식을 조합하여 조건 판별식을 작성할 경우 다음과 같이 구문을 작성한다.
+
+- `[ $a -gt 2 ] && [ $a -lt 10 ]`
+- `[[ $a -gt 2 && $a -lt 10 ]]`
+
+```{bash keyboard-syntax-flag-condition}
+a=7
+#if [ $a -gt 2 ] && [ $a -lt 10 ]; then
+if [[ $a -gt 2 && $a -lt 10 ]]; then
+    echo "$a is greater than 2 and less than 10"
+fi
+```
+
+## 파일 내부 단어 찾기 {#find-words-in-file}
+
+파일 내부에 특정 단어가 있는지도 조건문과 쉘 명령어를 결합시켜 찾아낼 수 있다.
+
+```{bash if-statement-file}
+echo "Korea is the best country ever!!" > data/shell/korea.txt
+if $(grep -q 'Korea' data/shell/korea.txt); then
+    echo "Korea 단어 있음"
+fi    
+```
+
+
+
