@@ -199,5 +199,93 @@ done
 ```
 
 
-## `case` 조건문 {#case-shell-script}
+# `case` 조건문 {#case-shell-script}
 
+`if`문을 중첩하여 사용할 경우 코드가 길어지고 해독하기 어려운 사례가 종종 발생된다. 이런 경우 `case` 문을 사용하면 좋다. `robs_files/` 디렉토리에는 확장자가 `.py`, `.csv`, `.txt`로 끝나는 파일이 있다. 이를 각자 디렉토리에 맞춰 복사하여 저장하는 사례를 생각해보자.
+
+## 현황 파악 {#case-shell-script-status}
+
+`data/shell/robs_files/` 디렉토리에 있는 파일 확장자만 뽑아내는 쉘 명령어는 다음과 같다. 즉, `cut` 명령어로 앞서 받은 결과물을 `.` 구분자로 쪼개고 두번째 필드만 추출해서 이를 정렬한 후에 유일무이한 값만 추출한다.
+
+```{bash case-statement-status}
+ls data/shell/robs_files/ | cut -d '.' -f2 | sort | uniq
+```
+
+## 목표 디렉토리 생성 {#case-shell-script-target}
+
+`data/shell/robs_files/` 디렉토리에 담긴 파일을 `csv/`, `python/`, `txt/` 디렉토리에 각가 정리할 수 있도록 `mkdir` 명령어로 디렉토리 3개를 생성한다.
+
+```{bash target-make-directory}
+mkdir data/shell/robs_files/csv
+mkdir data/shell/robs_files/python
+mkdir data/shell/robs_files/txt
+```
+
+
+## 파일 &rarr; 디렉토리 복사 [^extract-path-filename] {#case-shell-script-copy}
+
+[^extract-path-filename]: [stackoverflow, "Extract filename and extension in Bash"](https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash)
+
+`data/shell/robs_files/` 디렉토리에 담긴 파일을 `csv/`, `python/`, `txt/` 디렉토리로 `case`문을 사용해서 복사한다.
+
+직관적으로 다음과 같이 작성할 수 있다.
+
+1. `glob`을 사용해서 모든 파일을 가져온다. 
+1. 파일 확장자를 추출해낸다.
+1. `if`문으로 파일 확장자를 비교하여 앞서 생성한 디렉토리에 복사한다.
+
+```{bash target-copy-files}
+for path_file in data/shell/robs_files/*
+do
+  FILENAME=$path_file
+  EXT=${FILENAME##*.}
+  if [ $EXT == "py" ]; then
+    cp $path_file data/shell/robs_files/python/
+  fi
+  if [ $EXT == "csv" ]; then
+    cp $path_file data/shell/robs_files/csv/
+  fi
+  if [ $EXT == "txt" ]; then
+    cp $path_file data/shell/robs_files/txt/
+  fi
+done
+```
+
+`case` 문으로 제작하면 다음과 같다.
+
+
+# 함수(function) {#shell-script-function}
+
+함수는 R, 파이썬 등 대부분의 언어에서 제공하는 기능으로 재사용성을 증진시키고 입력과 출력만 기억하면 되기 때문에 단순한 레고 모듈을 조합하여 복잡하고 유용한 무언가를 제작할 수 있게 하는 가장 중요한 요소로 쉘에도 이런 기능이 제공된다.
+
+## 헬로 월드 {#function-helloworld}
+
+`function` 키워드로 쉘 스크립트 함수를 제작하고 함수명을 그 다음에 넣고 함수 몸통에 쉡 명령어를 작성한다. 마지막에 `return` 키워드로 함수출력을 반환시킨다.
+
+```{bash hello-world-function}
+function say_hello() {
+  echo "안녕하세요"
+}
+
+say_hello
+```
+
+원의 면적을 `S`로 두면 $S=\pi r^2$ 공식을 사용해서 면적을 계산할 수 있다. 즉 반지름(`r`)을 알면 원의 면적을 구할 수 있다.
+
+```{bash calculate-area}
+r=10
+function calculate_area() {
+  S=$(echo "scale=2; 3.14*$r*$r" | bc)
+  echo $S
+}
+
+calculate_area
+```
+
+
+## 인자를 받는 함수 {#function-argv}
+
+
+```{bash argv-function}
+
+```
