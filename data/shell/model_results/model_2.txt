@@ -1,4 +1,4 @@
-Model Name: Random Forest
+Model Name: Random forest
 Accuracy: 96
 F1: 0.89
 Date: 2019-12-01
