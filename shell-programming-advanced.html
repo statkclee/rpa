@@ -1782,17 +1782,146 @@ Model result files:  data/shell/model_results/model_4.txt</code></pre>
 <span id="cb17-3"><a href="#cb17-3"></a>  <span class="bu">echo</span> <span class="st">&quot;Random Forest 포함된 파일: &quot;</span><span class="va">$(</span><span class="fu">grep</span> -e <span class="st">&#39;[Rr]andom [Ff]orest&#39;</span> <span class="va">$file)</span></span>
 <span id="cb17-4"><a href="#cb17-4"></a><span class="kw">done</span></span></code></pre></div>
 <pre><code>Random Forest 포함된 파일: 
-Random Forest 포함된 파일: Model Name: Random Forest
+Random Forest 포함된 파일: Model Name: Random forest
 Random Forest 포함된 파일: 
 Random Forest 포함된 파일: </code></pre>
 </div>
 </div>
+<div id="while-shell-script" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> <code>sed</code> 사례</h2>
+<p>이번에는 특정 디렉토리 파일 전체를 뒤져서 특정 단어가 들어간 파일을 찾아 해당 단어를 다른 다른어로 치환시키는 사례를 살펴보자. <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<ul>
+<li>맥OS: <code>sed -i &#39;&#39; &#39;s/old-text/new-text/g&#39; input</code></li>
+<li>리눅스: <code>sed -i &#39;s/old-text/new-text/g&#39; input</code></li>
+</ul>
+<p>특정단어가 포함된 파일을 찾게되면 <code>sed</code>로 단어를 치환시킨다… 그리고 나서 다시 치환된 결과를 확인한다.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">for</span> <span class="fu">file</span> in data/shell/model_results/*.txt</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">do</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="bu">echo</span> <span class="st">&quot;Random Forest 포함된 파일: &quot;</span><span class="va">$(</span><span class="fu">grep</span> -e <span class="st">&#39;[Rr]andom [Ff]orest&#39;</span> <span class="va">$file)</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">sed</span> -i <span class="st">&#39;&#39;</span> <span class="st">&#39;s/Forest/forest/g&#39;</span> <span class="va">$file</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>  <span class="bu">echo</span> <span class="st">&quot;Random Forest 포함된 파일: &quot;</span><span class="va">$(</span><span class="fu">grep</span> -e <span class="st">&#39;[Rr]andom [Ff]orest&#39;</span> <span class="va">$file)</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="kw">done</span></span></code></pre></div>
+<pre><code>Random Forest 포함된 파일: 
+Random Forest 포함된 파일: 
+Random Forest 포함된 파일: Model Name: Random forest
+Random Forest 포함된 파일: Model Name: Random forest
+Random Forest 포함된 파일: 
+Random Forest 포함된 파일: 
+Random Forest 포함된 파일: 
+Random Forest 포함된 파일: </code></pre>
 </div>
-<div id="while-shell-script" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> <code>while</code> 반복</h1>
-<div id="case-shell-script" class="section level2" number="6.1">
-<h2 number="6.1"><span class="header-section-number">6.1</span> <code>case</code> 조건문</h2>
+<div id="while-shell-script-before" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> <code>while</code> 반복</h2>
+<p><code>for</code>문과 유사한데 조건이 만족되면 반복을 중지하고 빠져나온다는 점에서 차이가 있다. 다음과 같이 로켓 발사를 위한 카운트다운의 사례를 보면 처음 10초부터 시작하여 매번 <code>while</code>루프가 돌 때마다 1초씩 감소하여 마지막 0이 되면 반복을 중지하고 빠져나오게 된다.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="va">countdown=</span>10</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="kw">while</span><span class="bu"> [</span> <span class="va">$countdown</span> <span class="ot">-ge</span> 1<span class="bu"> ]</span>; </span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="kw">do</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="bu">echo</span> <span class="st">&#39;현재값:&#39;</span> <span class="va">$countdown</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="kw">((</span>countdown-=1<span class="kw">))</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="kw">done</span></span></code></pre></div>
+<pre><code>현재값: 10
+현재값: 9
+현재값: 8
+현재값: 7
+현재값: 6
+현재값: 5
+현재값: 4
+현재값: 3
+현재값: 2
+현재값: 1</code></pre>
 </div>
+</div>
+<div id="case-shell-script" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> <code>case</code> 조건문</h1>
+<p><code>if</code>문을 중첩하여 사용할 경우 코드가 길어지고 해독하기 어려운 사례가 종종 발생된다. 이런 경우 <code>case</code> 문을 사용하면 좋다. <code>robs_files/</code> 디렉토리에는 확장자가 <code>.py</code>, <code>.csv</code>, <code>.txt</code>로 끝나는 파일이 있다. 이를 각자 디렉토리에 맞춰 복사하여 저장하는 사례를 생각해보자.</p>
+<div id="case-shell-script-status" class="section level2" number="6.1">
+<h2 number="6.1"><span class="header-section-number">6.1</span> 현황 파악</h2>
+<p><code>data/shell/robs_files/</code> 디렉토리에 있는 파일 확장자만 뽑아내는 쉘 명령어는 다음과 같다. 즉, <code>cut</code> 명령어로 앞서 받은 결과물을 <code>.</code> 구분자로 쪼개고 두번째 필드만 추출해서 이를 정렬한 후에 유일무이한 값만 추출한다.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">ls</span> data/shell/robs_files/ <span class="kw">|</span> <span class="fu">cut</span> -d <span class="st">&#39;.&#39;</span> -f2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span></span></code></pre></div>
+<pre><code>csv
+py
+python
+txt</code></pre>
+</div>
+<div id="case-shell-script-target" class="section level2" number="6.2">
+<h2 number="6.2"><span class="header-section-number">6.2</span> 목표 디렉토리 생성</h2>
+<p><code>data/shell/robs_files/</code> 디렉토리에 담긴 파일을 <code>csv/</code>, <code>python/</code>, <code>txt/</code> 디렉토리에 각가 정리할 수 있도록 <code>mkdir</code> 명령어로 디렉토리 3개를 생성한다.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">mkdir</span> data/shell/robs_files/csv</span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">mkdir</span> data/shell/robs_files/python</span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="fu">mkdir</span> data/shell/robs_files/txt</span></code></pre></div>
+</div>
+<div id="case-shell-script-copy" class="section level2" number="6.3">
+<h2 number="6.3"><span class="header-section-number">6.3</span> 파일 → 디렉토리 복사 <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></h2>
+<p><code>data/shell/robs_files/</code> 디렉토리에 담긴 파일을 <code>csv/</code>, <code>python/</code>, <code>txt/</code> 디렉토리로 <code>case</code>문을 사용해서 복사한다.</p>
+<p>직관적으로 다음과 같이 작성할 수 있다.</p>
+<ol style="list-style-type: decimal">
+<li><code>glob</code>을 사용해서 모든 파일을 가져온다.</li>
+<li>파일 확장자를 추출해낸다.</li>
+<li><code>if</code>문으로 파일 확장자를 비교하여 앞서 생성한 디렉토리에 복사한다.</li>
+</ol>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">for</span> <span class="ex">path_file</span> in data/shell/robs_files/*</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">do</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>  <span class="va">FILENAME=$path_file</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>  <span class="va">EXT=${FILENAME##</span>*.<span class="va">}</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>  <span class="kw">if</span><span class="bu"> [</span> <span class="va">$EXT</span> <span class="ot">==</span> <span class="st">&quot;py&quot;</span><span class="bu"> ]</span>; <span class="kw">then</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>    <span class="fu">cp</span> <span class="va">$path_file</span> data/shell/robs_files/python/</span>
+<span id="cb26-7"><a href="#cb26-7"></a>  <span class="kw">fi</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a>  <span class="kw">if</span><span class="bu"> [</span> <span class="va">$EXT</span> <span class="ot">==</span> <span class="st">&quot;csv&quot;</span><span class="bu"> ]</span>; <span class="kw">then</span></span>
+<span id="cb26-9"><a href="#cb26-9"></a>    <span class="fu">cp</span> <span class="va">$path_file</span> data/shell/robs_files/csv/</span>
+<span id="cb26-10"><a href="#cb26-10"></a>  <span class="kw">fi</span></span>
+<span id="cb26-11"><a href="#cb26-11"></a>  <span class="kw">if</span><span class="bu"> [</span> <span class="va">$EXT</span> <span class="ot">==</span> <span class="st">&quot;txt&quot;</span><span class="bu"> ]</span>; <span class="kw">then</span></span>
+<span id="cb26-12"><a href="#cb26-12"></a>    <span class="fu">cp</span> <span class="va">$path_file</span> data/shell/robs_files/txt/</span>
+<span id="cb26-13"><a href="#cb26-13"></a>  <span class="kw">fi</span></span>
+<span id="cb26-14"><a href="#cb26-14"></a><span class="kw">done</span></span></code></pre></div>
+</div>
+<div id="case-statement-extension" class="section level2" number="6.4">
+<h2 number="6.4"><span class="header-section-number">6.4</span> <code>case</code> 문</h2>
+<p><code>case</code> 문으로 제작하면 다음과 같다.</p>
+</div>
+</div>
+<div id="shell-script-function" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> 함수(function)</h1>
+<p>함수는 R, 파이썬 등 대부분의 언어에서 제공하는 기능으로 재사용성을 증진시키고 입력과 출력만 기억하면 되기 때문에 단순한 레고 모듈을 조합하여 복잡하고 유용한 무언가를 제작할 수 있게 하는 가장 중요한 요소로 쉘에도 이런 기능이 제공된다.</p>
+<div id="function-helloworld" class="section level2" number="7.1">
+<h2 number="7.1"><span class="header-section-number">7.1</span> 헬로 월드</h2>
+<p><code>function</code> 키워드로 쉘 스크립트 함수를 제작하고 함수명을 그 다음에 넣고 함수 몸통에 쉡 명령어를 작성한다. 마지막에 <code>return</code> 키워드로 함수출력을 반환시킨다.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">function</span><span class="fu"> say_hello()</span> <span class="kw">{</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="bu">echo</span> <span class="st">&quot;안녕하세요&quot;</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="kw">}</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="ex">say_hello</span></span></code></pre></div>
+<pre><code>안녕하세요</code></pre>
+<p>원의 면적을 <code>S</code>로 두면 <span class="math inline">\(S=\pi r^2\)</span> 공식을 사용해서 면적을 계산할 수 있다. 즉 반지름(<code>r</code>)을 알면 원의 면적을 구할 수 있다.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1"></a><span class="va">r=</span>10</span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="kw">function</span><span class="fu"> calculate_area</span> <span class="kw">{</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>  <span class="va">S=$(</span><span class="bu">echo</span> <span class="st">&quot;scale=2; 3.14*</span><span class="va">$r</span><span class="st">*</span><span class="va">$r</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">bc</span><span class="va">)</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>  <span class="bu">echo</span> <span class="va">$S</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="kw">}</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a></span>
+<span id="cb29-7"><a href="#cb29-7"></a><span class="ex">calculate_area</span></span></code></pre></div>
+<pre><code>314.00</code></pre>
+</div>
+<div id="function-argv" class="section level2" number="7.2">
+<h2 number="7.2"><span class="header-section-number">7.2</span> 인자를 받는 함수</h2>
+<p>인자를 받는 함수는 앞서와 마찬가지로 <code>$1</code>, <code>$2</code>, … 을 사용한다. 총인자갯수는 <code>#1</code>으로 하여 계산을 할 수 있다.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1"></a></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="kw">function</span><span class="fu"> calculate_area</span> <span class="kw">{</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>  <span class="va">AREA=$(</span><span class="bu">echo</span> <span class="st">&quot;scale=2; 3.14*</span><span class="va">$1</span><span class="st">*</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="fu">bc</span><span class="va">)</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>  <span class="bu">echo</span> <span class="st">&quot;총인자갯수: &quot;</span> <span class="va">$#</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a>  <span class="bu">echo</span> <span class="st">&quot;반지름: &quot;</span> <span class="va">$1</span>  <span class="st">&quot;원면적: &quot;</span> <span class="va">$AREA</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a><span class="kw">}</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a></span>
+<span id="cb31-8"><a href="#cb31-8"></a><span class="ex">calculate_area</span> 100</span></code></pre></div>
+<pre><code>총인자갯수:  1
+반지름:  100 원면적:  31400.00</code></pre>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://myshittycode.wordpress.com/2014/07/24/os-x-sed-extra-characters-at-the-end-of-l-command-error/">OS X + Sed: “extra characters at the end of l command” Error</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash">stackoverflow, “Extract filename and extension in Bash”</a><a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
  
