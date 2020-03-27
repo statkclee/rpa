@@ -31,7 +31,9 @@ title: RPA (Robotic Process Automation)
 - [데이터 과학 자동화 (autoX)](rpa-auto-X.html)
     - [`autoX` 헬로월드](rpa-auto-X-hello-world.html)
         - [`autoX` 헬로월드: 데이터 품질](rpa-auto-X-hello-world-quality.html)
-
+        - [`autoX` 헬로월드: 데이터 변환](rpa-auto-X-hello-world-transform.html)
+        - [`autoX` 헬로월드: EDA](rpa-auto-X-hello-world-EDA.html)        
+        - [`autoX` 헬로월드: 모형](rpa-auto-X-hello-world-model.html)        
 
 ## 참고문헌
 
