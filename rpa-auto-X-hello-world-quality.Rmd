@@ -45,7 +45,7 @@ library(tidyverse)
 
 # 데이터 품질 {#autoEDA-data-quality}
 
-`ggplot2::mpg` 데이터에는 결측값이나 문제될 것은 특별히 없고 다만 문자형 변수가 있어 이를 범주형 변수로 변환하는 과정만 거치고 이를 `data` 디렉토리  `mpg.pdf` 파일로 저장시킨다.
+`ggplot2::mpg` 데이터에는 결측값이나 문제될 것은 특별히 없고 다만 문자형 변수가 있어 이를 범주형 변수로 변환하는 과정만 거치고 이를 `data` 디렉토리  `mpg_quality.pdf` 파일로 저장시킨다.
 
 ```{r data-quality, eval=FALSE}
 library(tidyverse)
