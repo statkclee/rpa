@@ -50,8 +50,16 @@ library(tidyverse)
 
 ## 데이터 품질 {#autoEDA-data-quality}
 
+- [`autoX` 헬로월드: 데이터 품질](rpa-auto-X-hello-world-quality.html)
+  
 ## 데이터 변환 {#autoEDA-data-transformation}
+
+- [`autoX` 헬로월드: 데이터 변환](rpa-auto-X-hello-world-transform.html)
 
 # 탐색적 데이터 분석 {#autoEDA-EDA}
 
+- [`autoX` 헬로월드: EDA](rpa-auto-X-hello-world-EDA.html)        
+
 # 모형 {#autoEDA-model}
+
+- [`autoX` 헬로월드: 모형](rpa-auto-X-hello-world-model.html)        
