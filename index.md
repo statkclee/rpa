@@ -30,6 +30,7 @@ title: RPA (Robotic Process Automation)
     - [대용량 텍스트 데이터 깔끔하게 다루기](rpa-data-munging.html)
 - [데이터 과학 자동화 (autoX)](rpa-auto-X.html)
     - [`autoX` 헬로월드](rpa-auto-X-hello-world.html)
+        - [`autoX` 헬로월드: 데이터 품질](rpa-auto-X-hello-world-quality.html)
 
 
 ## 참고문헌
