@@ -25,12 +25,6 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
 library(tidyverse)
 ```
 
-# 반복문(`for`) {#shell-for}
-
-# 함수 {#shell-function}
-
-# 자동실행(`cron`) {#shell-cron}
-
 # 조건문(`if`) {#shell-if}
 
 `if`문은 조건을 판별하여 조건에 부합되는 경우와 그렇지 않는 경우를 나눠서 프로그램을 진행시킨다. 쉘 프로그램에서 `if`문을 작성할 때 `if` ... `fi`와 같이 시작과 끝을 명기한다. `case`문도 동일하게 `case` ... `esac`와 같이 단어를 전치시킨다.
@@ -300,3 +294,9 @@ function calculate_area {
 
 calculate_area 100
 ```
+
+# 자동실행(`cron`) {#shell-cron}
+
+- [자동화 헬로월드 - wsl + crontab](https://statkclee.github.io/sw4ds/sw4ds-automation-helloworld.html)
+- [지진데이터 cron 자동화: 보고서 생성](https://statkclee.github.io/sw4ds/sw4ds-earthquake-make-report.html)
+- [지진데이터 cron 자동화: 작업 통보 자동화(스케쥴링, cron job)](https://statkclee.github.io/sw4ds/sw4ds-earthquake-cron-automation.html)
