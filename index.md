@@ -43,5 +43,3 @@ title: RPA (Robotic Process Automation)
 - [Software Carpentry (2018), "Intermediate Shell"](https://rgaiacs.gitlab.io/2018-11-07-intermediate-shell-sheffield/)
 
 
-
-
