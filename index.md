@@ -36,6 +36,8 @@ title: RPA (Robotic Process Automation)
         - [`autoX` 헬로월드: 데이터 변환](rpa-auto-X-hello-world-transform.html)
         - [`autoX` 헬로월드: EDA](rpa-auto-X-hello-world-EDA.html)        
         - [`autoX` 헬로월드: 모형](rpa-auto-X-hello-world-model.html)        
+1. [펭귄 성별 예측 CI/CD](rpa-penguin-ci-cd.html)
+
 
 ## 참고문헌
 
@@ -45,4 +47,4 @@ title: RPA (Robotic Process Automation)
 - [Software Carpentry (2018), "Intermediate Shell"](https://rgaiacs.gitlab.io/2018-11-07-intermediate-shell-sheffield/)
 - [Chris Brown, Murray Cadzow, Paula A Martinez, Rhydwyn McGuire, David Neuzerling, David Wilkinson, Saras Windecker (2020-09-10), "Github actions with R"](https://ropenscilabs.github.io/actions_sandbox/)
 - [Jenny Bryan, the STAT 545 TAs, Jim Hester, "Happy Git and GitHub for the useR"](https://happygitwithr.com/)
-
+- [Will Landau, "The targets R Package User Manual"](https://wlandau.github.io/targets-manual/index.html)

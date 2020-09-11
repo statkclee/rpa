@@ -1,0 +1,33 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "펭귄 성별 예측 CI/CD"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_sections: TRUE
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(tidyverse)
+```
+
+![](fig/penguin-ci-cd.png)
+
+# FE / BE {#front-end-backend}
+
+[Penguins Predictive Model - Shiny](https://github.com/statkclee/shiny_penguins) 저장소를 예로 들어 CI/CD 파이프라인을 만들어보자.
+
