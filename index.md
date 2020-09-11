@@ -3,6 +3,8 @@ layout: page
 title: RPA (Robotic Process Automation)
 ---
 
+<img src="fig/automation.png" />
+
 1. [명령라인(Commandline) 데이터 분석](cli-data-science-workflow.html)
      - [명령라인(Commandline) 인터페이스 - 데이터 과학](cmd-data-science-hello-world.html)
      - [대용량 데이터 표본추출](rpa-random-sampling.html)
@@ -41,5 +43,6 @@ title: RPA (Robotic Process Automation)
 - [Moshe Zadka (2019년 6월 4일), "DevOps in Python: Infrastructure as Python"](https://www.amazon.com/DevOps-Python-Infrastructure-as/dp/148424432X)
 - [Noah Gift (2019), "Command Line Automation in Python", Data Camp](https://www.datacamp.com/courses/command-line-automation-in-python)
 - [Software Carpentry (2018), "Intermediate Shell"](https://rgaiacs.gitlab.io/2018-11-07-intermediate-shell-sheffield/)
-
+- [Chris Brown, Murray Cadzow, Paula A Martinez, Rhydwyn McGuire, David Neuzerling, David Wilkinson, Saras Windecker (2020-09-10), "Github actions with R"](https://ropenscilabs.github.io/actions_sandbox/)
+- [Jenny Bryan, the STAT 545 TAs, Jim Hester, "Happy Git and GitHub for the useR"](https://happygitwithr.com/)
 
