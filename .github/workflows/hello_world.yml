@@ -11,5 +11,5 @@ jobs:
         MY_VAR: Hi there! My name is
         FIRST_NAME: Tidyverse
         LAST_NAME: Korea
-      run: 
+      run: |
         echo $MY_VAR $FIRST_NAME $LAST_NAME.
