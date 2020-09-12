@@ -26,7 +26,7 @@ library(tidyverse)
 Sys.setlocale("LC_MESSAGES", "C")
 ```
 
-# R 스크립트 작성 [^call-github] {#initiate-github-actions}
+# 작업흐름 [^call-github] {#initiate-github-actions}
 
 [^call-github]: [@leechungkyu (2020-02-27), "GitHub Actions으로 날씨알리미 만들기"](https://qiita.com/leechungkyu/items/e57951cdaa046acafd76)
 
@@ -145,5 +145,11 @@ bundang_df %>%
   select(fcstDate, fcstTime, category, 항목명, fcstValue, 단위)
 ```
 
+
+## Rmd 스크립트 작성 {#write-rmd-script}
+
+Rmd 스크립트를 작성한다.
+
+# 작업 개요
 
 
