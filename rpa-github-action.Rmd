@@ -1,0 +1,50 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "GitHub Action 살펴보기"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_sections: TRUE
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(tidyverse)
+```
+
+# 헬로 월드 [^github-tutorial] {#hello-world-github-action}
+
+[^github-tutorial]: [sonic0002 (2019-12-23 05:33:39), "A tutorial on Github Actions"](https://www.pixelstech.net/article/1577096152-A-tutorial-on-Github-Actions)
+
+**GitHub Action** 은 작업흐름(workflow)으로 정의되며 작업흐름은 작업(job)으로 구성되고 다시 작업은 실행 단계(step)로 구성되고 각 단계는 동작(action)으로 최종 실행된다.
+
+- `workflow`: CI 도구가 실행시키는 작업흐름(workflow)
+- `job`: 작업흐름은 작업(job)으로 구성되고 작업흐름 실행시 언급되는 작업을 의미함.
+- `step`: 작업은 단계(step)으로 구성됨.
+- `action`: 각 단계는 동작(action)으로 구성되어 가장 작은 실행 단위.
+
+
+## 배쉬 예제 {#local-bash-example}
+
+```{bash echo-variable, eval = TRUE}
+MY_VAR="Hi there! My name is"
+FIRST_NAME="Mona"
+MIDDLE_NAME="The"
+LAST_NAME="Octocat"
+echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+```
+
+
