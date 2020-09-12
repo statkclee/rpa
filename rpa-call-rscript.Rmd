@@ -21,9 +21,6 @@ editor_options:
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
                       comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
-
-library(tidyverse)
-Sys.setlocale("LC_MESSAGES", "C")
 ```
 
 # 환경 작성
