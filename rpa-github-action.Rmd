@@ -41,10 +41,9 @@ library(tidyverse)
 
 ```{bash echo-variable, eval = TRUE}
 MY_VAR="Hi there! My name is"
-FIRST_NAME="Mona"
-MIDDLE_NAME="The"
-LAST_NAME="Octocat"
-echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+FIRST_NAME="Tidyverse"
+LAST_NAME="Korea"
+echo $MY_VAR $FIRST_NAME $LAST_NAME.
 ```
 
 
