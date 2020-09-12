@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "RPA - 자동화(Automation)"
-subtitle: "GitHub Action 살펴보기"
+subtitle: "GitHub Action 살펴보기 - 헬로 월드"
 output:
   html_document:
     includes:

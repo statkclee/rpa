@@ -36,8 +36,10 @@ title: RPA (Robotic Process Automation)
         - [`autoX` 헬로월드: 데이터 변환](rpa-auto-X-hello-world-transform.html)
         - [`autoX` 헬로월드: EDA](rpa-auto-X-hello-world-EDA.html)        
         - [`autoX` 헬로월드: 모형](rpa-auto-X-hello-world-model.html)        
-1. **[GitHub Action 살펴보기](rpa-github-action.html)**
+1. **[GitHub Action 살펴보기 - 헬로월드](rpa-github-action.html)**
     - [펭귄 성별 예측 CI/CD](rpa-penguin-ci-cd.html)
+    - [GitHub Action: R 프로그램 작성](rpa-write-rscript.html)
+    - [GitHub Action: R 프로그램 작성](rpa-call-rscript.html)
 
 
 ## 참고문헌

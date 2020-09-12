@@ -1,0 +1,149 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "GitHub Action: R 프로그램 작성"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_sections: TRUE
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(tidyverse)
+Sys.setlocale("LC_MESSAGES", "C")
+```
+
+# R 스크립트 작성 [^call-github] {#initiate-github-actions}
+
+[^call-github]: [@leechungkyu (2020-02-27), "GitHub Actions으로 날씨알리미 만들기"](https://qiita.com/leechungkyu/items/e57951cdaa046acafd76)
+
+## 날씨관련 지도정보 {#all-about-weather-map}
+
+먼저 [기상청 날씨데이터 서비스 - 기상자료개발포털](https://data.kma.go.kr/cmmn/main.do) 웹사이트에서 데이터만 제공하고 있으며 관련된 RESTful API를 사용하기 위한 API KEY는 [공공데이터포털 - 동네예보 조회서비스](https://www.data.go.kr/data/15057682/openapi.do)에서 받아 저장한다.
+
+## 시군구 읍면동 {#map-sido-emd}
+
+동네예보 조회서비스 오픈 API 활용가이드를 참고하면 동네를 특정하기 위한 공간지리 정보가 읍면동 단위로 상세히 제공되고 있다.
+
+```{r map-weather}
+library(sf)
+library(tidyverse)
+library(readxl)
+library(leaflet)
+library(glue)
+
+map_df <- read_excel("data/기상청18_동네예보 조회서비스_오픈API활용가이드_격자_위경도(20200706).xlsx", sheet = "최종업데이트파일_20200706")
+
+map_df <- map_df %>% 
+  mutate(long = as.numeric(`경도(초/100)`),
+         lat  = as.numeric(`위도(초/100)`))
+
+map_df %>% 
+  filter(`2단계` == "성남시분당구") %>% 
+    leaflet() %>% 
+    addProviderTiles(provider = providers$OpenStreetMap) %>% 
+    addMarkers(lng=~long, lat = ~lat, clusterOptions = markerClusterOptions(),
+               popup = ~ as.character(glue("<strong> {`행정구역코드`} </strong> <br>
+                                           &middot; 시도명: {`1단계`} <br>
+                                           &middot; 시군구명: {`2단계`} <br>
+                                           &middot; 읍면동: {`3단계`}")))
+
+```
+
+## API KEY 테스트 {#map-sido-emd-api}
+
+발급받은 API KEY를 R에서 불러와서 활용할 수 있도록 `glue` 팩키지와 `usethis::edit_r_environ()` 함수를 사용해서 API KEY정보를 저장시키고 `Sys.getenv("KMA_KEY")` 명령어로 불러와서 RESTful API 조회를 준비한다.
+
+
+```{r check-url-api}
+library(tidyverse)
+library(glue)
+
+KMA_KEY <- Sys.getenv("KMA_KEY")
+
+kma_url <- glue("http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey={KMA_KEY}&numOfRows=10&pageNo=1&base_date=20201021&base_time=0230&nx=55&ny=127&dataType=JSON")
+```
+
+앞서 작성한 RESTful API 요청을 `curl`명령어로 던져 결과를 확인한다.
+
+```{bash check-url-api-curl, error = TRUE}
+curl --include --request GET 'http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey=l83LlqFLUxoCdqYEGwjniUL%2BMWq%2FXbSZBRgFI9YUqvzx03l9ln9DRSjgwYJZ%2BqFON10B286GcOdbBUsvBFm0XA%3D%3D&numOfRows=10&pageNo=1&base_date=20200912&base_time=0230&nx=55&ny=127&dataType=JSON'
+```
+
+## 성남시분당구 날씨 {#map-sido-emd-bundang}
+
+성남시 분당구 격자정보(X, Y)를 파악한다.
+
+```{r weather-bundang}
+map_df %>% 
+  filter(`2단계` == "성남시분당구") %>% 
+  count(`격자 X`, `격자 Y`)
+```
+
+`기상청18_동네예보 조회서비스_오픈API활용가이드.docx` 문서에서 코드값 정보를 참조하여 동네예보 항목값(category)에 대한 정보를 사전에 코드화시켜 데이터프레임으로 준비한다.
+
+```{r code-table}
+code_table <- tribble(~"category", ~"항목명", ~"단위", 
+                      "POP", "강수확률", "%",
+                      "PTY", "강수형태", "코드값",
+                      "R06", "6시간 강수량", "범주 (1 mm)",
+                      "REH", "습도", "%",
+                      "S06", "6시간 신적설", "범주(1 cm)",
+                      "SKY", "하늘상태", "코드값",
+                      "T3H", "3시간 기온", "℃",
+                      "TMN", "아침 최저기온", "℃",
+                      "TMX", "낮 최고기온", "℃",
+                      "UUU", "풍속(동서성분)", "m/s",
+                      "VVV", "풍속(남북성분)", "m/s",
+                      "WAV", "파고", "M",
+                      "VEC", "풍향", "m/s",
+                      "WSD", "풍속", "1")
+```
+
+
+격자정보 nx=62, nx=63, ny=122, ny=123 조합하면 총 4개 지역이 나오지만 먼저 nx=62, ny=122 을 조합한 성남시 분당구 한 구역만 예측 날씨값을 가져온다. 
+
+- 하늘상태(SKY) 코드 : 맑음(1), 구름많음(3), 흐림(4) 
+- 강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+
+```{r get-today-weather-info}
+library(rvest)
+library(httr)
+
+## 날짜 전처리
+today_date <- Sys.Date() %>%  as.character() %>% 
+  str_remove_all(pattern = "-")
+
+## RESTful 호출
+bundang_kma_url <- glue("http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey={KMA_KEY}&numOfRows=10&pageNo=1&base_date={today_date}&base_time=0230&nx=62&ny=122&dataType=JSON")
+
+bundang_resp <- GET(bundang_kma_url)
+
+## JSON --> 데이터프레임 변환
+bundang_list <- jsonlite::fromJSON(content(bundang_resp, "text"), simplifyVector = FALSE)
+
+bundang_df <- data.frame(Reduce(rbind, bundang_list$response$body$items$item)) %>% 
+  as_tibble() %>% 
+  mutate_all(unlist)
+
+## 데이터프레임 가독성 있게 표현
+bundang_df %>% 
+  left_join(code_table, by="category") %>% 
+  select(fcstDate, fcstTime, category, 항목명, fcstValue, 단위)
+```
+
+
+
