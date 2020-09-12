@@ -26,11 +26,10 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
 # 환경 작성
 
 ```{r code-table}
-library(tibble)
-library(dplyr)
 library(httr)
 library(glue)
 library(jsonlite)
+library(tidyverse)
 
 KMA_KEY <- "l83LlqFLUxoCdqYEGwjniUL%2BMWq%2FXbSZBRgFI9YUqvzx03l9ln9DRSjgwYJZ%2BqFON10B286GcOdbBUsvBFm0XA%3D%3D"
 

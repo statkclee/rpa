@@ -18,7 +18,7 @@ jobs:
 
     # install packages needed
     - name: install required packages
-      run: Rscript -e 'install.packages(c("rmarkdown", "tibble", "dplyr", "httr", "glue", "jsonlite"))'
+      run: Rscript -e 'install.packages(c("rmarkdown", "tidyverse", "httr", "glue", "jsonlite"))'
 
     # Render READEME.md using rmarkdown
     - name: render README
