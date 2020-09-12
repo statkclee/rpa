@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
                       comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
 
 library(tidyverse)
+Sys.setlocale("LC_MESSAGES", "C")
 ```
 
 # 헬로 월드 [^github-tutorial] {#hello-world-github-action}
@@ -39,11 +40,46 @@ library(tidyverse)
 
 ## 배쉬 예제 {#local-bash-example}
 
-```{bash echo-variable, eval = TRUE}
+한글 윈도우10 컴퓨터에서 배쉬를 돌린다는 것은 여러가지 설정을 해줘야 되서 다음과 같은 문제가 생긴다. 
+
+```{bash echo-variable, eval = TRUE, error = TRUE}
 MY_VAR="Hi there! My name is"
 FIRST_NAME="Tidyverse"
 LAST_NAME="Korea"
 echo $MY_VAR $FIRST_NAME $LAST_NAME.
 ```
+
+
+## GitHub Action {#local-bash-github-action}
+
+로컬 컴퓨터에서 상기와 같이 작성한 배쉬 스크립트, 즉 리눅스 환경을 빌려 테스트를 진행하면 참 좋을 것이라고 생각된다.
+
+상단 **Acitions** 메뉴에서 `new workflow`를 클릭하면 `hello_world.yml` 파일에 `workflow` 작업내용을 상세하게 작성할 수 있다.
+
+- 리눅스 계열: ubuntu-latest，ubuntu-18.04 or ubuntu-16.04
+- 윈도우 계열: windows-latest，windows-2019 or windows-2016
+- 맥OS 계열: macOS-latest or macOS-10.14
+
+```{r hello-world-yaml, eval = FALSE}
+name: Greeting from Tidyverse Korea
+on: push
+
+jobs:
+  my-job:
+    name: Hello World
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print a greeting
+      env:
+        MY_VAR: Hi there! My name is
+        FIRST_NAME: Tidyverse
+        LAST_NAME: Korea
+      run: |
+        echo $MY_VAR $FIRST_NAME $LAST_NAME.
+```
+
+상기 GitHub Actions `yaml` 파일을 실행시키게 되면 다음과 같은 결과를 얻게 된다. 즉, 리눅스 환경에서 작성한 배쉬 헬로월드 스크립트를 정상적으로 실행기킬 수 있게 된다. 
+
+![](fig/github-action-hello-world.png)
 
 
