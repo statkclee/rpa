@@ -1,0 +1,34 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "GitHub Action: Rmd 파일 컴파일 - CI"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_section: true
+    self_contained: true
+bibliography: bibliography_rpa.bib
+csl: biomed-central.csl
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(tidyverse)
+Sys.setlocale("LC_MESSAGES", "C")
+```
+
+
+# ㅌ..
