@@ -38,9 +38,9 @@ title: RPA (Robotic Process Automation)
         - [`autoX` 헬로월드: 모형](rpa-auto-X-hello-world-model.html)        
 1. **[GitHub Action 살펴보기 - 헬로월드](rpa-github-action.html)**
     - [펭귄 성별 예측 CI/CD](rpa-penguin-ci-cd.html)
-    - [GitHub Action: Rmd 파일 컴파일](rpa-compile-rmd-file.html)
+    - [GitHub Action: Rmd 파일 컴파일 - render](rpa-compile-rmd-file.html)
         - [GitHub Action: Rmd 프로그램 작성](rpa-write-rmd-file.html)
-
+    - [GitHub Action: Rmd 파일 컴파일 - CI](rpa-compile-rmd-ghactions.html)
 
 ## 참고문헌
 

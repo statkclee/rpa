@@ -9,10 +9,14 @@ output:
       after_body: footer.html
     theme: default
     toc: yes
+    toc_depth: 2
     toc_float: true
     highlight: tango
     code_folding: show
-    number_sections: TRUE
+    number_section: true
+    self_contained: true
+bibliography: bibliography_rpa.bib
+csl: biomed-central.csl
 mainfont: NanumGothic
 editor_options: 
   chunk_output_type: console
@@ -26,11 +30,18 @@ library(tidyverse)
 Sys.setlocale("LC_MESSAGES", "C")
 ```
 
-# 작업흐름 [^call-github] {#initiate-github-actions}
+![](fig/weather-github-actions.png)
 
-[^call-github]: [@leechungkyu (2020-02-27), "GitHub Actions으로 날씨알리미 만들기"](https://qiita.com/leechungkyu/items/e57951cdaa046acafd76)
+# 작업흐름 [^call-github] {-#initiate-github-actions}
 
-## 날씨관련 지도정보 {#all-about-weather-map}
+[^call-github]: [leechungkyu (2020-02-27), "GitHub Actions으로 날씨알리미 만들기"](https://qiita.com/leechungkyu/items/e57951cdaa046acafd76)
+
+공공데이터포털 웹사이트에서 API KEY를 발급받아 "동네예보 조회서비스"에서 날씨 정보를 가져온다. 
+문제는 매번 시간이 지나는데 이를 계속해서 로컬 컴퓨터에서 컴파일하는 것은 사람이 할 일이 아니다.
+이를 자동화하기 위해서 정확히는 돈(?)과 노력(?)을 들이지 않는 방법을 찾아보자.
+이를 위해서 GitHub Actions를 염두에 두고 `.Rmd` 파일에 "날씨 정보를 가져와서 보고서를 HTML 파일"로 제작하는 것을 cron 작업으로 연계해보자.
+
+# 날씨관련 지도정보 {#all-about-weather-map}
 
 먼저 [기상청 날씨데이터 서비스 - 기상자료개발포털](https://data.kma.go.kr/cmmn/main.do) 웹사이트에서 데이터만 제공하고 있으며 관련된 RESTful API를 사용하기 위한 API KEY는 [공공데이터포털 - 동네예보 조회서비스](https://www.data.go.kr/data/15057682/openapi.do)에서 받아 저장한다.
 
@@ -63,7 +74,7 @@ map_df %>%
 
 ```
 
-## API KEY 테스트 {#map-sido-emd-api}
+# API KEY 테스트 {#map-sido-emd-api}
 
 발급받은 API KEY를 R에서 불러와서 활용할 수 있도록 `glue` 팩키지와 `usethis::edit_r_environ()` 함수를 사용해서 API KEY정보를 저장시키고 `Sys.getenv("KMA_KEY")` 명령어로 불러와서 RESTful API 조회를 준비한다.
 
@@ -80,7 +91,7 @@ kma_url <- glue("http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageF
 앞서 작성한 RESTful API 요청을 `curl`명령어로 던져 결과를 확인한다.
 
 ```{bash check-url-api-curl, error = TRUE}
-curl --include --request GET 'http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey=l83LlqFLUxoCdqYEGwjniUL%2BMWq%2FXbSZBRgFI9YUqvzx03l9ln9DRSjgwYJZ%2BqFON10B286GcOdbBUsvBFm0XA%3D%3D&numOfRows=10&pageNo=1&base_date=20200912&base_time=0230&nx=55&ny=127&dataType=JSON'
+curl --include --request GET 'http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey=XKpB4XVSokub2d4g0ADRVllCwUM%2BwmT5k5PhBLUCXb2hcW0LgHm%2BRHs2O%2BdWi4S0JJQECMZEVEx0VV1ZuJDDUw%3D%3D&numOfRows=10&pageNo=1&base_date=20200912&base_time=0230&nx=55&ny=127&dataType=JSON'
 ```
 
 ## 성남시분당구 날씨 {#map-sido-emd-bundang}
@@ -119,7 +130,7 @@ code_table <- tribble(~"category", ~"항목명", ~"단위",
 - 하늘상태(SKY) 코드 : 맑음(1), 구름많음(3), 흐림(4) 
 - 강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
 
-```{r get-today-weather-info}
+```{r get-today-weather-info, error=TRUE}
 library(rvest)
 library(httr)
 
@@ -140,16 +151,50 @@ bundang_df <- data.frame(Reduce(rbind, bundang_list$response$body$items$item)) %
   mutate_all(unlist)
 
 ## 데이터프레임 가독성 있게 표현
-bundang_df %>% 
+bundang_df <- bundang_df %>% 
   left_join(code_table, by="category") %>% 
   select(fcstDate, fcstTime, category, 항목명, fcstValue, 단위)
+
+bundang_df
+```
+
+## 시각화 {#weather-report-viz}
+
+JSON 날씨정보를 데이터프레임으로 변환시켰다면 다음 단계로 데이터 과학의 강력한 기능을 시각화를 통해 진정한 힘을 보여준다.
+
+```{r weather-data-viz}
+plot_title <- glue::glue("성남시 분당구 동네예보 서비스: {unique(bundang_df$fcstDate)}, {unique(bundang_df$fcstTime)}")
+                         
+bundang_df %>% 
+  mutate(fcstValue = as.numeric(fcstValue)) %>% 
+  filter(항목명 %in% c("강수확률", "습도")) %>% 
+  ggplot(aes(x=항목명, y=fcstValue, fill = 항목명)) +
+    geom_col(width=0.5, show.legend = FALSE) +
+    facet_wrap(~항목명, scales="free_x")  +
+    labs(x="", y="확률(%)", title=plot_title)+
+    theme_bw()
 ```
 
 
-## Rmd 스크립트 작성 {#write-rmd-script}
+# Rmd 스크립트 작성 [@kaupp2016using] {#write-rmd-script}
 
-Rmd 스크립트를 작성한다.
+상기 코드가 포함된 보고서를 Rmd 스크립트로 작성한다. 
+문제는 API KEY가 노출된다는 점인데 이는 GitHub Action에서 다른 방식으로 보완하기로하고 
+우선은 제대로 동작이 되는지만 확인한다.
 
-# 작업 개요
+```{r embed-Rmd-file}
+xfun::embed_file('rpa-write-rmd-file.Rmd')
+```
+
+## Rmd 스크립트 컴파일 {#write-rmd-script-compile}
+
+날씨예보 보고서를 쉘환경에서 컴파일하기 때문에 먼저 `rmarkdown::render()` 함수로 테스트를 한다.
+
+- `Rscript -e rmarkdown::render("rpa-write-rmd-file.Rmd")`
+
+```{r compile-rmd-file}
+rmarkdown::render("rpa-write-rmd-file.Rmd")
+```
+
 
 

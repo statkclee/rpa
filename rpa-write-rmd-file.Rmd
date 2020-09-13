@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "RPA - 자동화(Automation)"
-subtitle: "GitHub Action: R 프로그램 호출"
+subtitle: "GitHub Action: Rmd 프로그램 작성"
 output:
   html_document:
     includes:
@@ -11,7 +11,7 @@ output:
     toc: yes
     toc_float: true
     highlight: tango
-    code_folding: show
+    code_folding: hide
     number_sections: TRUE
 mainfont: NanumGothic
 editor_options: 
@@ -23,15 +23,17 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
                       comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
 ```
 
-# 환경 작성
+# 날씨 보고서 {#weather-report}
 
-```{r code-table}
+## 데이터 {#weather-report-data}
+
+```{r code-table-for-rmd}
 library(httr)
 library(glue)
 library(jsonlite)
 library(tidyverse)
 
-KMA_KEY <- "l83LlqFLUxoCdqYEGwjniUL%2BMWq%2FXbSZBRgFI9YUqvzx03l9ln9DRSjgwYJZ%2BqFON10B286GcOdbBUsvBFm0XA%3D%3D"
+KMA_KEY <- "XKpB4XVSokub2d4g0ADRVllCwUM%2BwmT5k5PhBLUCXb2hcW0LgHm%2BRHs2O%2BdWi4S0JJQECMZEVEx0VV1ZuJDDUw%3D%3D"
 
 code_table <- tribble(~"category", ~"항목명", ~"단위", 
                       "POP", "강수확률", "%",
@@ -67,7 +69,27 @@ bundang_df <- data.frame(Reduce(rbind, bundang_list$response$body$items$item)) %
   mutate_all(unlist)
 
 ## 데이터프레임 가독성 있게 표현
-bundang_df %>% 
+bundang_df <- bundang_df %>% 
   left_join(code_table, by="category") %>% 
   select(fcstDate, fcstTime, category, 항목명, fcstValue, 단위)
+
+bundang_df
 ```
+
+## 시각화 {#weather-report-viz}
+
+
+```{r weather-data-viz-for-rmd}
+plot_title <- glue::glue("성남시 분당구 동네예보 서비스: {unique(bundang_df$fcstDate)}, {unique(bundang_df$fcstTime)}")
+                         
+bundang_df %>% 
+  mutate(fcstValue = as.numeric(fcstValue)) %>% 
+  filter(항목명 %in% c("강수확률", "습도")) %>% 
+  ggplot(aes(x=항목명, y=fcstValue, fill = 항목명)) +
+    geom_col(width=0.5, show.legend = FALSE) +
+    facet_wrap(~항목명, scales="free_x")  +
+    labs(x="", y="확률(%)", title=plot_title)+
+    theme_bw()
+```
+
+
