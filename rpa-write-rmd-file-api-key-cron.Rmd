@@ -1,0 +1,99 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "GitHub Action: API KEY를 갖는 Rmd 프로그램 작성"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_float: true
+    highlight: tango
+    code_folding: hide
+    number_sections: TRUE
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+```
+
+# 날씨 보고서 {#weather-report}
+
+매 3시간 마다 보고서가 자동 생성되도록 한다.
+
+[crontab guru](https://crontab.guru/every-2-hours) 웹사이트에서 관련 내용을 참조한다.
+
+## 데이터 {#weather-report-data}
+
+```{r code-table-for-rmd}
+library(httr)
+library(glue)
+library(jsonlite)
+library(tidyverse)
+
+## GitHub 저장소에 저장된 WEATHER_API_KEY 호출
+KMA_KEY <- Sys.getenv("WEATHER_API_KEY")
+
+code_table <- tribble(~"category", ~"항목명", ~"단위", 
+                      "POP", "강수확률", "%",
+                      "PTY", "강수형태", "코드값",
+                      "R06", "6시간 강수량", "범주 (1 mm)",
+                      "REH", "습도", "%",
+                      "S06", "6시간 신적설", "범주(1 cm)",
+                      "SKY", "하늘상태", "코드값",
+                      "T3H", "3시간 기온", "℃",
+                      "TMN", "아침 최저기온", "℃",
+                      "TMX", "낮 최고기온", "℃",
+                      "UUU", "풍속(동서성분)", "m/s",
+                      "VVV", "풍속(남북성분)", "m/s",
+                      "WAV", "파고", "M",
+                      "VEC", "풍향", "m/s",
+                      "WSD", "풍속", "1")
+
+
+## 날짜 전처리
+today_date <- Sys.Date() %>%  as.character() %>% 
+  str_remove_all(pattern = "-")
+
+## RESTful 호출
+bundang_kma_url <- glue("http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey={KMA_KEY}&numOfRows=10&pageNo=1&base_date={today_date}&base_time=0230&nx=62&ny=122&dataType=JSON")
+
+bundang_resp <- GET(bundang_kma_url)
+
+## JSON --> 데이터프레임 변환
+bundang_list <- jsonlite::fromJSON(content(bundang_resp, "text"), simplifyVector = FALSE)
+
+bundang_df <- data.frame(Reduce(rbind, bundang_list$response$body$items$item)) %>% 
+  as_tibble() %>% 
+  mutate_all(unlist)
+
+## 데이터프레임 가독성 있게 표현
+bundang_df <- bundang_df %>% 
+  left_join(code_table, by="category") %>% 
+  select(fcstDate, fcstTime, category, 항목명, fcstValue, 단위)
+
+bundang_df
+```
+
+## 시각화 {#weather-report-viz}
+
+```{r weather-data-viz-for-rmd}
+plot_title <- glue::glue("성남시 분당구 동네예보 서비스: {unique(bundang_df$fcstDate)}, {unique(bundang_df$fcstTime)}")
+                         
+bundang_df %>% 
+  mutate(fcstValue = as.numeric(fcstValue)) %>% 
+  filter(항목명 %in% c("강수확률", "습도")) %>% 
+  ggplot(aes(x=항목명, y=fcstValue, fill = 항목명)) +
+    geom_col(width=0.5, show.legend = FALSE) +
+    facet_wrap(~항목명, scales="free_x")  +
+    labs(x="", y="확률(%)", title=plot_title)+
+    theme_bw()
+```
+
+

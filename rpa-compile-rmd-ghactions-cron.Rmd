@@ -1,0 +1,107 @@
+---
+layout: page
+title: "RPA - 자동화(Automation)"
+subtitle: "GitHub Action: Rmd 파일 컴파일 - CI + Cron"
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: footer.html
+    theme: default
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    highlight: tango
+    code_folding: show
+    number_section: true
+    self_contained: true
+bibliography: bibliography_rpa.bib
+csl: biomed-central.csl
+mainfont: NanumGothic
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE,
+                      comment="", digits = 3, tidy = FALSE, prompt = FALSE, fig.align = 'center')
+
+library(tidyverse)
+Sys.setlocale("LC_MESSAGES", "C")
+```
+
+# 날씨 예보 자동화 {#weather-forecasting-automation}
+
+매번 푸쉬를 던질때마다 날씨 보고서를 생성하는 것도 말이 되지 않는다. 
+매 3시간 마다 보고서가 자동 생성되도록 한다. [crontab guru](https://crontab.guru/every-2-hours) 웹사이트에서 관련 내용을 참조한다.
+
+## `YAML` 파일 작성 {#crontab-schedul}
+
+매 3시간마다 보고서가 자동생성되도록 하기 위해서 [crontab guru](https://crontab.guru/every-2-hours) 웹사이트에서 크론 문법에 맞춰 작성하고 실행 `schedule`을 반영한다.
+
+```{r weather-api-cron, eval = FALSE}
+name: Render Weather Report with APIKEY and CRON
+
+# Controls when the action will run
+on:
+  schedule:
+  - cron: '0 */3 * * *'
+  
+jobs:
+  render_with_api_key:
+    # The type of runner that the job will run on
+    runs-on: macOS-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v1
+    - uses: r-lib/actions/setup-pandoc@v1
+
+    # install packages needed
+    - name: install required packages
+      run: Rscript -e 'install.packages(c("rmarkdown", "tidyverse", "httr", "glue", "jsonlite"))'
+
+    # Render READEME.md using rmarkdown
+    - name: render weather report
+      env:
+        WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+      run: Rscript -e 'rmarkdown::render("rpa-write-rmd-file-api-key.Rmd")'
+
+    - name: commit rendered HTML
+      run: |
+        git add rpa-write-rmd-file-api-key.Rmd rpa-write-rmd-file-api-key.html
+        git commit -m "Re-compile rpa-write-rmd-file.Rmd" || echo "No changes to commit"
+        git push origin gh-pages || echo "No changes to commit"
+```
+
+
+```{r embed-yml-file-api-key-cron}
+xfun::embed_file('.github/workflows/render_rmd_file_apikey_cron.yml')
+```
+
+
+## `Rmd` 파일 {#crontab-schedule-rmd}
+
+`.Rmd` 파일은 크게 수정할 것은 없다. 이미 앞서 실행시간을 반영해 둔 것이 있어 이를 그대로 준용한다.
+따라서 보고서가 제대로 데이터를 물고 왔는지 확인할 수 있다.
+
+```{r weather-data-viz-for-rmd-double, eval = FALSE}
+plot_title <- glue::glue("성남시 분당구 동네예보 서비스: {unique(bundang_df$fcstDate)}, {unique(bundang_df$fcstTime)}")
+                         
+bundang_df %>% 
+  mutate(fcstValue = as.numeric(fcstValue)) %>% 
+  filter(항목명 %in% c("강수확률", "습도")) %>% 
+  ggplot(aes(x=항목명, y=fcstValue, fill = 항목명)) +
+    geom_col(width=0.5, show.legend = FALSE) +
+    facet_wrap(~항목명, scales="free_x")  +
+    labs(x="", y="확률(%)", title=plot_title)+
+    theme_bw()
+```
+
+
+```{r embed-rmd-file-rmd-final}
+xfun::embed_file('rpa-write-rmd-file-api-key-cron.Rmd')
+```
+
+

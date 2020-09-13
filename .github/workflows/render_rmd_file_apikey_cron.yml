@@ -1,0 +1,35 @@
+name: Render Weather Report with APIKEY and CRON
+
+# Controls when the action will run
+on:
+  schedule:
+  - cron: '0 */3 * * *'
+  
+jobs:
+  render_with_api_key:
+    # The type of runner that the job will run on
+    runs-on: macOS-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v1
+    - uses: r-lib/actions/setup-pandoc@v1
+
+    # install packages needed
+    - name: install required packages
+      run: Rscript -e 'install.packages(c("rmarkdown", "tidyverse", "httr", "glue", "jsonlite"))'
+
+    # Render READEME.md using rmarkdown
+    - name: render weather report
+      env:
+        WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+      run: Rscript -e 'rmarkdown::render("rpa-write-rmd-file-api-key.Rmd")'
+
+    - name: commit rendered HTML
+      run: |
+        git add rpa-write-rmd-file-api-key.Rmd rpa-write-rmd-file-api-key.html
+        git commit -m "Re-compile rpa-write-rmd-file.Rmd" || echo "No changes to commit"
+        git push origin gh-pages || echo "No changes to commit"
+        
+
