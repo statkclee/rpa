@@ -40,7 +40,7 @@ Sys.setlocale("LC_MESSAGES", "C")
 매 3시간마다 보고서가 자동생성되도록 하기 위해서 [crontab guru](https://crontab.guru/every-2-hours) 웹사이트에서 크론 문법에 맞춰 작성하고 실행 `schedule`을 반영한다.
 
 ```{r weather-api-cron, eval = FALSE}
-name: Render Weather Report with APIKEY and CRON
+name: Render Report w/ APIKEY & CRON
 
 # Controls when the action will run
 on:
@@ -48,7 +48,7 @@ on:
   - cron: '0 */3 * * *'
   
 jobs:
-  render_with_api_key:
+  render_apikey_cron:
     # The type of runner that the job will run on
     runs-on: macOS-latest
 
@@ -66,12 +66,12 @@ jobs:
     - name: render weather report
       env:
         WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
-      run: Rscript -e 'rmarkdown::render("rpa-write-rmd-file-api-key.Rmd")'
+      run: Rscript -e 'rmarkdown::render("rpa-write-rmd-file-api-key-cron.Rmd")'
 
     - name: commit rendered HTML
       run: |
-        git add rpa-write-rmd-file-api-key.Rmd rpa-write-rmd-file-api-key.html
-        git commit -m "Re-compile rpa-write-rmd-file.Rmd" || echo "No changes to commit"
+        git add rpa-write-rmd-file-api-key-cron.Rmd rpa-write-rmd-file-api-key-cron.html
+        git commit -m "Re-compile rpa-write-rmd-file-api-key-cron.Rmd" || echo "No changes to commit"
         git push origin gh-pages || echo "No changes to commit"
 ```
 
