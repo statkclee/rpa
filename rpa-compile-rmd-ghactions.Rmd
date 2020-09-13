@@ -31,8 +31,17 @@ Sys.setlocale("LC_MESSAGES", "C")
 ```
 
 
-# GitHub Actions YML 파일작성 {#write-yml-script}
+# GitHub Actions YML 파일작성 [^github-acitons-yml-usethis] {#write-yml-script}
 
+
+[^github-acitons-yml-usethis]: [By Gavin Simpson (30 April 2020), "Rendering your README with GitHub Actions", From the bottom of the heap the musings of a geographer](https://fromthebottomoftheheap.net/2020/04/30/rendering-your-readme-with-github-actions/)
+
+`.github/workflows/` 디렉토리 밑에 `.github/workflows/render_rmd_file.yml` 와 같이 `render_rmd_file.yml` 파일에 `workflow`, `job`, `step`, `action` 사항을 작성한다.
+
+- `workflow`: CI 도구가 실행시키는 작업흐름(workflow)
+- `job`: 작업흐름은 작업(job)으로 구성되고 작업흐름 실행시 언급되는 작업을 의미함.
+- `step`: 작업은 단계(step)으로 구성됨.
+- `action`: 각 단계는 동작(action)으로 구성되어 가장 작은 실행 단위.
 
 ```{r write-yml, eval = FALSE}
 name: Render Weather Report
@@ -61,7 +70,7 @@ jobs:
     - name: render weather report
       run: Rscript -e 'rmarkdown::render("rpa-write-rmd-file.Rmd")'
 
-    - name: commit rendered README
+    - name: commit rendered HTML
       run: |
         git add rpa-write-rmd-file.Rmd rpa-write-rmd-file.html
         git commit -m "Re-compile rpa-write-rmd-file.Rmd" || echo "No changes to commit"
@@ -77,7 +86,39 @@ xfun::embed_file('.github/workflows/render_rmd_file.yml')
 
 # GitHub Actions 서버 {#github-actions-server}
 
+`YAML` 파일은 github에 `gh-pages` 브랜치에 `push` 동작이 일어날 때 발생된다. `render` 이름 아래 맥OS(`macOS-latest`) 운영체제에 R마크다운을 올리기 위한 기본적인 내용이 `steps:` 에서 처리된다. 먼저 날씨 보고서 Rmd 파일을 HTML 파일로 변환시키는데 필요한 R 팩키지를 설치한다. 그리고 나서 `rmarkdown::render()` 명령어로 HTML 변환작업을 실행시킨다. 마지막으로 HTML 파일으로 Github에 푸쉬하여 마무리한다.
+
+```{r ghactions-trigger, eval = FALSE}
+on:
+  push:
+    branches: gh-pages
+```
+
+<div class = "row">
+  <div class = "col-md-6">
+**GitHub Actions Workflows**
 
 ![](fig/weather-github-action-results.png)
 
+  </div>
+  <div class = "col-md-6">
+**GitHub Actions Workflows 상세내용**
+
 ![](fig/weather-github-action-results-details.png)
+
+
+  </div>
+</div>
+
+
+
+# API KEY 등록 {#github-actions-api-key}
+
+동네예보 보고서 Rmd 파일의 경우 공공데이터 포털에서 발급받은 API 키가 그대로 노출되어 있다. 
+이를 별도 과정을 거쳐 숨겨놔야 보안을 높일 수 있다. 이를 위해서 GitHub 저장소에서 `Settings`를 클릭하게 되면 `Secrets`에 **New secret**를 통해서 API KEY를 등록시킬 수 있다.
+
+
+![](fig/weather-github-actions-apikey.png)
+
+
+
