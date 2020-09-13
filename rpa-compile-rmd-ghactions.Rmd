@@ -120,5 +120,37 @@ on:
 
 ![](fig/weather-github-actions-apikey.png)
 
+## 로컬 컴퓨터 환경변수 {#import-local-computer-env}
 
+로컬 컴퓨터에 `WEATHER_API_KEY` 변수명으로 KEY값을 저장시킨다. 
+그리고 나서 `Sys.getenv("WEATHER_API_KEY")` 명령어와 같이 환경변수에 저장된 값을 가져온다.
+
+![](fig/weather-github-actions-system-env.png)
+
+API KEY를 환경변수로 숨긴 사항을 반영한 Rmd 파일은 다음과 같다.
+
+```{r embed-Rmd-file}
+xfun::embed_file('rpa-write-rmd-file-api-key.Rmd')
+```
+
+
+<div class = "row">
+  <div class = "col-md-6">
+**API KEY 그대로 노출 시킨 경우**
+
+```{r rmd-api-key}
+KMA_KEY <- "xxdaAvrBsZ%2By7Db0b%2BIVIBXEiV0mBILBLB6%2Bj8Sbn.........."
+```
+
+
+  </div>
+  <div class = "col-md-6">
+**API KEY를 환경변수로 숨긴 경우**
+
+```{r rmd-api-key-env, eval = FALSE}
+KMA_KEY <- Sys.getenv("WEATHER_API_KEY")
+```
+
+  </div>
+</div>
 

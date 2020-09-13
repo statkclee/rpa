@@ -19,11 +19,11 @@ jobs:
     # install packages needed
     - name: install required packages
       run: Rscript -e 'install.packages(c("rmarkdown", "tidyverse", "httr", "glue", "jsonlite"))'
-      env:
-        WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
 
     # Render READEME.md using rmarkdown
     - name: render weather report
+      env:
+        WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
       run: Rscript -e 'rmarkdown::render("rpa-write-rmd-file-api-key.Rmd")'
 
     - name: commit rendered HTML
