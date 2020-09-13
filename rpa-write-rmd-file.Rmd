@@ -33,7 +33,7 @@ library(glue)
 library(jsonlite)
 library(tidyverse)
 
-KMA_KEY <- "XKpB4XVSokub2d4g0ADRVllCwUM%2BwmT5k5PhBLUCXb2hcW0LgHm%2BRHs2O%2BdWi4S0JJQECMZEVEx0VV1ZuJDDUw%3D%3D"
+KMA_KEY <- "S7wtSg%2B7m7gyL5mmBNmSPQXacADqMkzhwff8eIijjTax0bfltvPwB8wAPbMK7qMb75He%2FeWQ8ktL0WcnyGcapg%3D%3D"
 
 code_table <- tribble(~"category", ~"항목명", ~"단위", 
                       "POP", "강수확률", "%",
