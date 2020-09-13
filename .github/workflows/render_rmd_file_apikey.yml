@@ -6,7 +6,7 @@ on:
     branches: gh-pages
 
 jobs:
-  render:
+  render_with_api_key:
     # The type of runner that the job will run on
     runs-on: macOS-latest
 
