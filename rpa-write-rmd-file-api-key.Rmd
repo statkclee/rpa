@@ -34,7 +34,7 @@ library(jsonlite)
 library(tidyverse)
 
 ## GitHub 저장소에 저장된 WEATHER_API_KEY 호출
-KMA_KEY <- Sys.get("WEATHER_API_KEY")
+KMA_KEY <- Sys.getenv("WEATHER_API_KEY")
 
 code_table <- tribble(~"category", ~"항목명", ~"단위", 
                       "POP", "강수확률", "%",
