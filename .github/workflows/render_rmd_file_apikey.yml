@@ -16,11 +16,11 @@ jobs:
     - uses: r-lib/actions/setup-r@v1
     - uses: r-lib/actions/setup-pandoc@v1
 
-    - env:
-        WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
     # install packages needed
     - name: install required packages
       run: Rscript -e 'install.packages(c("rmarkdown", "tidyverse", "httr", "glue", "jsonlite"))'
+      env:
+        WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
 
     # Render READEME.md using rmarkdown
     - name: render weather report
