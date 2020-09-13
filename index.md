@@ -41,6 +41,7 @@ title: RPA (Robotic Process Automation)
     - [GitHub Action: Rmd 파일 컴파일 - render](rpa-compile-rmd-file.html)
         - [GitHub Action: Rmd 프로그램 작성](rpa-write-rmd-file.html)
     - [GitHub Action: Rmd 파일 컴파일 - CI](rpa-compile-rmd-ghactions.html)
+    - [GitHub Action: Rmd 파일 컴파일 - CI + Cron](rpa-compile-rmd-ghactions-cron.html)
 
 ## 참고문헌
 
