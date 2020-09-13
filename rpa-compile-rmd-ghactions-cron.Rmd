@@ -35,7 +35,7 @@ Sys.setlocale("LC_MESSAGES", "C")
 매번 푸쉬를 던질때마다 날씨 보고서를 생성하는 것도 말이 되지 않는다. 
 매 3시간 마다 보고서가 자동 생성되도록 한다. [crontab guru](https://crontab.guru/every-2-hours) 웹사이트에서 관련 내용을 참조한다.
 
-## `YAML` 파일 작성 {#crontab-schedul}
+# `YAML` 파일 작성 {#crontab-schedul}
 
 매 3시간마다 보고서가 자동생성되도록 하기 위해서 [crontab guru](https://crontab.guru/every-2-hours) 웹사이트에서 크론 문법에 맞춰 작성하고 실행 `schedule`을 반영한다.
 
@@ -81,7 +81,7 @@ xfun::embed_file('.github/workflows/render_rmd_file_apikey_cron.yml')
 ```
 
 
-## `Rmd` 파일 {#crontab-schedule-rmd}
+# `Rmd` 파일 {#crontab-schedule-rmd}
 
 `.Rmd` 파일은 크게 수정할 것은 없다. 이미 앞서 실행시간을 반영해 둔 것이 있어 이를 그대로 준용한다.
 따라서 보고서가 제대로 데이터를 물고 왔는지 확인할 수 있다.
@@ -103,5 +103,12 @@ bundang_df %>%
 ```{r embed-rmd-file-rmd-final}
 xfun::embed_file('rpa-write-rmd-file-api-key-cron.Rmd')
 ```
+
+
+# 결과 확인 {#check-cron-jobs}
+
+최대 3시간 후 [Actions &rarr; Workflows &rarr; Render Report w/ APIKEY & CRON](https://github.com/statkclee/rpa/actions?query=workflow%3A%22Render+Report+w%2F+APIKEY+%26+CRON%22)에서 실제 Cron 실행결과를 확인할 수 있다.
+
+![](fig/weather-github-actions-apikey-cron.png)
 
 
