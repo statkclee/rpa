@@ -3,7 +3,7 @@ name: Render Report w/ APIKEY & CRON
 # Controls when the action will run
 on:
   schedule:
-  - cron: '0 */3 * * *'
+  - cron: '0 0 * * 7'
   
 jobs:
   render_apikey_cron:
